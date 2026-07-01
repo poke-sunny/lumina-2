@@ -1,20 +1,38 @@
-import './globals.css'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Lumina | Premium Dark Real Estate',
-  description: 'Next-gen property platform for Gen Z investors.',
-  manifest: '/manifest.json',
-}
+  title: "LUMINA | Redefining Ownership",
+  description: "Institutional real estate meets blockchain liquidity.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Lumina",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en" className="dark">
-      <body className="bg-black text-white antialiased">{children}</body>
+    <html lang="en" className="bg-black">
+      <body className={`${inter.className} selection:bg-accent/30`}>
+        {children}
+      </body>
     </html>
-  )
+  );
 }
