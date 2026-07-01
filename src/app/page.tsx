@@ -1,131 +1,188 @@
 'use client'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, Activity, ShieldCheck, Globe } from 'lucide-react'
+import { ArrowRight, Activity, ShieldCheck, Globe, Zap, Cpu } from 'lucide-react'
 
 export default function Landing() {
   return (
-    <main className="min-h-screen bg-black text-foreground selection:bg-accent/30 overflow-x-hidden">
-      {/* Fixed Navigation */}
-      <nav className="fixed top-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference">
-        <span className="text-3xl font-black tracking-tighter text-white uppercase">Lumina</span>
-        <Link href="/onboarding" className="glass px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-accent hover:text-black transition-all duration-500">
-          Launch Terminal
+    <main className="min-h-screen bg-[#000000] text-[#F3F4F6] selection:bg-[#FF5A00]/30 overflow-x-hidden font-sans">
+      {/* Background Decorative Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#FF5A00]/5 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#FF5A00]/5 blur-[120px] rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full p-6 md:p-10 flex justify-between items-center z-50 backdrop-blur-sm bg-black/20 border-b border-white/5">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-[#FF5A00] rounded-lg flex items-center justify-center">
+            <div className="w-4 h-4 bg-black rounded-sm rotate-45" />
+          </div>
+          <span className="text-2xl font-black tracking-tighter text-white uppercase">Lumina</span>
+        </div>
+        <Link href="/onboarding" className="glass px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-white/10 hover:border-[#FF5A00]/50 hover:bg-[#FF5A00] hover:text-black transition-all duration-700">
+          Access Terminal
         </Link>
       </nav>
 
-      {/* Hero Section: Structural Copy from Mockup */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-12 px-6">
-        <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-10 z-10">
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 px-6">
+        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+          
+          {/* Left Column: Messaging */}
+          <div className="lg:col-span-7 space-y-12 z-10">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-3 glass px-4 py-2 rounded-full border-accent/20"
+              className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-xl px-5 py-2.5 rounded-full border border-white/10"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-              </span>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Kinexys Node Active</span>
+              <div className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5A00] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF5A00]"></span>
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#FF5A00]">Kinexys Node Protocol LMN-01</span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-8"
+            >
+              <h1 className="text-6xl md:text-8xl xl:text-9xl font-black tracking-tighter text-white leading-[0.85] uppercase">
+                Next-Gen <br /> 
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5A00] via-[#FF8A4D] to-white italic font-light">Real Estate</span> <br />
+                Intelligence
+              </h1>
+              <p className="text-zinc-400 text-lg md:text-2xl max-w-xl leading-relaxed uppercase tracking-tight font-medium">
+                Your personal AI companion for institutional-grade tokenized ownership. Seamless. Liquid. Unstoppable.
+              </p>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="space-y-6"
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="flex flex-wrap gap-6 pt-6"
             >
-              <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-white leading-[0.9] uppercase">
-                Your Personal <br /> 
-                <span className="text-accent italic">AI Real Estate</span> <br />
-                Companion
-              </h1>
-              <p className="text-zinc-500 text-lg md:text-xl max-w-lg leading-relaxed uppercase tracking-tight font-medium">
-                Institutional-grade tokenization meets AI-driven intelligence. Ownership redefined for the next generation.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="flex flex-wrap gap-6 pt-4"
-            >
-              <Link href="/onboarding" className="bg-accent text-black px-10 py-5 rounded-2xl inline-flex items-center gap-4 hover:scale-[1.02] transition-all duration-500 group">
-                <span className="font-black uppercase tracking-widest text-sm">Explore Tokenized Ownership</span>
-                <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
+              <Link href="/onboarding" className="bg-[#FF5A00] text-black px-12 py-6 rounded-2xl inline-flex items-center gap-6 hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(255,90,0,0.3)] transition-all duration-500 group">
+                <span className="font-black uppercase tracking-[0.15em] text-sm">Claim Your Stake</span>
+                <ArrowRight size={22} className="group-hover:translate-x-3 transition-transform duration-500" />
               </Link>
             </motion.div>
           </div>
 
-          {/* Mockup Structural Card Section */}
-          <div className="relative">
+          {/* Right Column: High-End Asset Card */}
+          <div className="lg:col-span-5 relative">
             <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="glass rounded-[3.5rem] overflow-hidden border border-white/5 relative aspect-[4/5] md:aspect-square group"
+              initial={{ opacity: 0, scale: 0.9, rotate: 2 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="relative group"
             >
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay opacity-40" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+              {/* Outer Glow */}
+              <div className="absolute -inset-1 bg-gradient-to-br from-[#FF5A00]/20 to-transparent rounded-[4rem] blur-2xl opacity-50 group-hover:opacity-100 transition duration-1000" />
               
-              {/* Floating Data Overlays from Mockup */}
-              <div className="absolute top-12 left-12 glass p-6 rounded-3xl border-accent/20 animate-bounce-slow">
-                <div className="flex items-center gap-3">
-                  <Activity className="text-accent" size={18} />
-                  <p className="text-white font-mono text-xs font-black uppercase">8.2% APY Live</p>
+              {/* Main Card */}
+              <div className="relative glass rounded-[3.5rem] overflow-hidden border border-white/10 bg-zinc-900/40 backdrop-blur-3xl aspect-[4/5] shadow-2xl">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1545324418-f1d3c5b5a261?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay opacity-30 group-hover:scale-110 transition-transform duration-[2000ms]" />
+                
+                {/* Floating Elements */}
+                <div className="absolute top-8 left-8 right-8 flex justify-between items-start z-10">
+                  <div className="glass px-4 py-2 rounded-full border-white/10 flex items-center gap-2">
+                    <Activity size={14} className="text-[#FF5A00]" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Live Forecast</span>
+                  </div>
+                  <div className="bg-[#FF5A00] text-black px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest">
+                    Premium A+
+                  </div>
                 </div>
-              </div>
 
-              <div className="absolute bottom-12 left-12 right-12 glass p-8 rounded-[2.5rem] border-white/10 backdrop-blur-3xl">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-2xl font-black text-white uppercase tracking-tighter">Southampton Waterfront</h3>
-                    <span className="text-accent font-mono text-[10px] font-black">VERIFIED</span>
+                <div className="absolute bottom-0 left-0 right-0 p-10 bg-gradient-to-t from-black via-black/80 to-transparent space-y-8">
+                  <div className="space-y-2">
+                    <p className="text-[#FF5A00] font-mono text-[10px] font-black uppercase tracking-[0.3em]">Tokenized Asset LMN-SW</p>
+                    <h3 className="text-4xl font-black text-white uppercase tracking-tighter leading-none">Southampton <br/>Waterfront</h3>
                   </div>
-                  <div className="flex gap-8 pt-2">
-                    <Metric label="Entry" value="£50k" />
-                    <Metric label="Network" value="Kinexys" />
-                    <Metric label="Class" value="A+" highlight />
+                  
+                  <div className="grid grid-cols-2 gap-8 border-t border-white/5 pt-8">
+                    <div className="space-y-1">
+                      <p className="text-[9px] text-zinc-500 uppercase tracking-widest font-black">Target APY</p>
+                      <p className="text-5xl font-black text-[#FF5A00] tracking-tighter shadow-[#FF5A00]/20 drop-shadow-lg">8.2%</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[9px] text-zinc-500 uppercase tracking-widest font-black">Entry Point</p>
+                      <p className="text-3xl font-black text-white tracking-tighter">£50,000</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4 bg-white/5 border border-white/5 p-4 rounded-2xl">
+                    <div className="w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center">
+                      <Globe size={20} className="text-[#FF5A00]" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-[9px] text-zinc-500 uppercase tracking-widest font-black">Blockchain Network</p>
+                      <p className="text-xs font-bold text-white uppercase tracking-wider">J.P. Morgan Kinexys</p>
+                    </div>
+                    <div className="flex h-2 w-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
                   </div>
                 </div>
               </div>
+              
+              {/* Secondary decorative floating badge */}
+              <motion.div 
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="absolute -right-8 top-1/4 glass p-6 rounded-3xl border-[#FF5A00]/20 backdrop-blur-2xl hidden xl:block"
+              >
+                <ShieldCheck className="text-[#FF5A00] mb-2" size={24} />
+                <p className="text-white font-black text-[10px] uppercase tracking-widest">Multi-Sig<br/>Custody</p>
+              </motion.div>
             </motion.div>
-            
-            {/* Decorative elements to match mockup complexity */}
-            <div className="absolute -z-10 -right-20 -bottom-20 w-96 h-96 bg-accent/10 blur-[120px] rounded-full" />
           </div>
         </div>
       </section>
 
-      {/* Feature Section */}
-      <section className="py-32 px-6 border-t border-zinc-900">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-          <Feature icon={<ShieldCheck size={32}/>} title="Multi-Sig Custody" desc="Secured via institutional-grade Onyx architecture with T+0 settlement." />
-          <Feature icon={<Globe size={32}/>} title="Global Liquidity" desc="Access real estate markets worldwide through blockchain fractionalization." />
-          <Feature icon={<Activity size={32}/>} title="AI Diagnostics" desc="Real-time performance metrics and predictive growth modeling for every asset." />
+      {/* Feature Section: Premium Cards */}
+      <section className="py-32 px-6 relative">
+        <div className="max-w-7xl mx-auto space-y-20">
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">Architected for <span className="text-[#FF5A00]">Winners</span></h2>
+            <p className="text-zinc-500 uppercase tracking-[0.2em] text-[10px] font-black">Institutional Technology | Consumer Simplicity</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <Feature icon={<Zap size={32}/>} title="Instant Settlement" desc="T+0 liquidity cycles on-chain. Move from asset to capital in a single heartbeat." />
+            <Feature icon={<ShieldCheck size={32}/>} title="Digital Vault" desc="Onyx-grade multi-layer security protocols protecting your fractional ownership 24/7." />
+            <Feature icon={<Cpu size={32}/>} title="AI Diagnostics" desc="Predictive market modeling and real-time yield optimization via GPT-4o integration." />
+          </div>
         </div>
       </section>
-    </main>
-  )
-}
 
-function Metric({ label, value, highlight }: any) {
-  return (
-    <div className="space-y-1">
-      <p className="text-[8px] text-zinc-500 uppercase tracking-widest font-black">{label}</p>
-      <p className={'text-xl font-black tracking-tighter ' + (highlight ? 'text-accent' : 'text-white')}>{value}</p>
-    </div>
+      {/* Footer */}
+      <footer className="py-20 px-6 border-t border-white/5 text-center">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="text-2xl font-black tracking-tighter text-white uppercase">Lumina</div>
+          <p className="text-zinc-600 text-[9px] uppercase tracking-[0.3em] font-black max-w-xl mx-auto">
+            Lumina is an AI-integrated real estate investment platform. Tokenized assets are subject to market volatility. T+0 settlement available on verified Kinexys nodes.
+          </p>
+          <div className="pt-10 flex justify-center gap-8 text-zinc-500 text-[10px] uppercase tracking-widest font-bold">
+            <a href="#" className="hover:text-[#FF5A00] transition-colors">Terms</a>
+            <a href="#" className="hover:text-[#FF5A00] transition-colors">Privacy</a>
+            <a href="#" className="hover:text-[#FF5A00] transition-colors">Network Status</a>
+          </div>
+        </div>
+      </footer>
+    </main>
   )
 }
 
 function Feature({ icon, title, desc }: any) {
   return (
-    <div className="glass p-10 rounded-[2.5rem] space-y-6 border-white/5 hover:border-accent/20 transition-all duration-500 group">
-      <div className="text-accent group-hover:scale-110 transition-transform duration-500">{icon}</div>
-      <div className="space-y-3">
-        <h3 className="text-xl font-black text-white uppercase tracking-tighter">{title}</h3>
+    <div className="glass p-12 rounded-[3rem] space-y-8 border-white/5 hover:border-[#FF5A00]/20 hover:bg-white/[0.02] transition-all duration-700 group relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF5A00]/5 blur-[60px] rounded-full group-hover:bg-[#FF5A00]/10 transition-all duration-700" />
+      <div className="text-[#FF5A00] group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">{icon}</div>
+      <div className="space-y-4">
+        <h3 className="text-2xl font-black text-white uppercase tracking-tighter">{title}</h3>
         <p className="text-zinc-500 text-sm leading-relaxed uppercase tracking-widest font-bold">{desc}</p>
       </div>
     </div>
