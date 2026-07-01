@@ -104,7 +104,7 @@ function Slider({ label, min, max, step, value, onChange, prefix = "", suffix = 
 function SurvivalWidget({ score }: { score: number }) {
   let tier: SurvivalTier = 'dead';
   let color = '#ef4444'; // red
-  let icon = <Skull size={18} />;
+  let icon: React.ReactElement<{ size?: number; className?: string }> = <Skull size={18} />;
   let label = 'Dead';
 
   if (score > SURVIVAL_THRESHOLDS.high) {
@@ -132,7 +132,9 @@ function SurvivalWidget({ score }: { score: number }) {
   return (
     <div className="glass-card p-6 border-white/10 space-y-4 relative overflow-hidden">
       <div className="absolute top-0 right-0 p-4 opacity-10">
-         {React.cloneElement(icon as React.ReactElement, { size: 80 })}
+         {React.isValidElement<{ size?: number }>(icon)
+           ? React.cloneElement(icon, { size: 80 })
+           : null}
       </div>
       <div className="flex justify-between items-start">
         <div className="space-y-1">
