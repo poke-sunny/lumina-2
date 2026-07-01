@@ -36,7 +36,7 @@ export default function Onboarding() {
           <motion.div 
             className="h-full bg-accent" 
             initial={{ width: 0 }}
-            animate={{ width: \`\${((currentStep + 1) / steps.length) * 100}%\` }}
+            animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
           />
         </div>
 

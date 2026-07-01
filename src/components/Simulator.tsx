@@ -32,9 +32,9 @@ export default function Simulator() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-4">
-        <Metric label="Protocol Stake" value={\`\${stake}%\`} />
-        <Metric label="Monthly Est." value={\`£\${monthlyYield}\`} />
-        <Metric label="Yearly Est." value={\`£\${yearlyYield}\`} />
+        <Metric label="Protocol Stake" value={`${stake}%`} />
+        <Metric label="Monthly Est." value={`£${monthlyYield}`} />
+        <Metric label="Yearly Est." value={`£${yearlyYield}`} />
       </div>
     </div>
   )
