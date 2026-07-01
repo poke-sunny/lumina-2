@@ -1,372 +1,342 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { 
   ArrowRight, 
   Building2, 
   ShieldCheck, 
   Zap, 
-  Activity, 
-  TrendingUp, 
   ChevronRight,
   Terminal,
   Globe,
   Lock,
-  Cpu,
   CalendarDays,
-  Search,
   Users,
+  Search,
   Briefcase,
   PieChart,
-  BarChart4,
-  Network,
-  Fingerprint
+  Target,
+  FileText,
+  MapPin,
+  CheckCircle2,
+  Mail
 } from 'lucide-react'
 
-// --- Utility: Safe Icon Clone ---
-const renderIcon = (icon: React.ReactNode, size: number = 18, className: string = "") => {
-  return React.isValidElement<{ size?: number; className?: string }>(icon) 
-    ? React.cloneElement(icon, { size, className: `${icon.props.className || ''} ${className}`.trim() }) 
-    : null;
+// --- Constants ---
+const THEME = {
+  navy: '#003366',
+  slate: '#64748b',
+  bg: '#ffffff',
+  accent: '#f8fafc',
+  border: 'rgba(0, 51, 102, 0.08)'
 }
 
 // --- Components ---
-const MetricCard = ({ label, value, sub, trend, icon, delay = 0 }: any) => (
+
+const NavLink = ({ href, children, icon: Icon }: any) => (
+  <Link href={href} className="group flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-[#003366] transition-colors">
+    {Icon && <Icon size={14} className="text-slate-300 group-hover:text-[#003366] transition-colors" />}
+    {children}
+  </Link>
+)
+
+const FeatureCard = ({ title, description, icon: Icon, delay = 0 }: any) => (
   <motion.div
-    initial={{ opacity: 0, y: 15 }}
+    initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    transition={{ delay, duration: 0.6 }}
-    className="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-premium flex flex-col gap-4"
+    transition={{ delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    className="p-8 rounded-[32px] border border-slate-100 bg-white hover:border-[#003366]/20 transition-all group"
   >
-    <div className="flex justify-between items-start">
-      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 text-jigsaw-navy">
-        {renderIcon(icon, 20)}
-      </div>
-      {trend && (
-        <span className="text-[10px] font-black tracking-widest text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg flex items-center gap-1">
-          <TrendingUp size={10} /> {trend}
-        </span>
-      )}
+    <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-8 group-hover:bg-[#003366]/5 transition-colors">
+      <Icon size={24} className="text-[#003366]" />
     </div>
-    <div>
-      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1">{label}</p>
-      <h4 className="text-2xl font-medium tracking-tight text-slate-900 tnum">{value}</h4>
-      <p className="text-[11px] text-slate-400 mt-1 font-medium">{sub}</p>
+    <h3 className="text-xl font-medium text-slate-900 mb-3 tracking-tight">{title}</h3>
+    <p className="text-sm text-slate-500 leading-relaxed font-medium">{description}</p>
+  </motion.div>
+)
+
+const VenueCard = ({ title, location, cap, yieldRate, delay = 0 }: any) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    viewport={{ once: true }}
+    transition={{ delay, duration: 0.8 }}
+    className="overflow-hidden rounded-[32px] border border-slate-100 bg-white shadow-premium group cursor-pointer"
+  >
+    <div className="h-48 bg-slate-50 flex items-center justify-center relative">
+      <Building2 size={48} className="text-slate-200" />
+      <div className="absolute top-4 right-4 px-3 py-1 bg-white/80 backdrop-blur-md rounded-full border border-slate-100">
+        <span className="text-[10px] font-black uppercase tracking-widest text-[#003366]">Tier 1 Asset</span>
+      </div>
+    </div>
+    <div className="p-6 space-y-4">
+      <div>
+        <h4 className="text-lg font-medium text-slate-900 mb-1">{title}</h4>
+        <div className="flex items-center gap-1.5 text-slate-400">
+          <MapPin size={12} />
+          <span className="text-[10px] font-bold uppercase tracking-widest">{location}</span>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-50">
+        <div className="space-y-1">
+          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Delegates</p>
+          <p className="text-sm font-bold tnum">{cap.toLocaleString()}</p>
+        </div>
+        <div className="space-y-1">
+          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Efficiency</p>
+          <p className="text-sm font-bold tnum text-emerald-600">{yieldRate}%</p>
+        </div>
+      </div>
     </div>
   </motion.div>
 )
 
-const SliderWidget = ({ label, value, onChange, min, max, step, suffix = "" }: any) => (
-  <div className="space-y-6 p-6 bg-slate-50/50 rounded-2xl border border-slate-100">
-    <div className="flex justify-between items-end">
-      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{label}</span>
-      <span className="text-xl font-medium text-jigsaw-navy tnum">{value.toLocaleString()}{suffix}</span>
-    </div>
-    <div className="relative h-2 flex items-center group">
-      <div className="absolute w-full h-full bg-slate-200 rounded-full" />
-      <div 
-        className="absolute h-full bg-jigsaw-navy rounded-full transition-all duration-300" 
-        style={{ width: `${((value - min) / (max - min)) * 100}%` }} 
-      />
-      <input 
-        type="range" min={min} max={max} step={step} value={value} 
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="absolute w-full opacity-0 cursor-pointer z-10"
-      />
-      <motion.div 
-        className="absolute w-5 h-5 bg-white border-2 border-jigsaw-navy rounded-full shadow-md pointer-events-none"
-        style={{ left: `calc(${((value - min) / (max - min)) * 100}% - 10px)` }}
-      />
-    </div>
-  </div>
-)
-
-export default function JigsawPremiumPortal() {
-  const [valuation, setValuation] = useState(100)
-  const [yieldRate, setYieldRate] = useState(8.2)
-  const [entry, setEntry] = useState(50000)
+export default function JigsawCorporatePortal() {
+  const [budget, setBudget] = useState(500000)
+  const [alpha, setAlpha] = useState(35.2)
 
   return (
-    <main className="min-h-screen bg-[#f8fafc] jigsaw-grid-bg text-slate-900 overflow-x-hidden selection:bg-jigsaw-navy/10">
-      
-      {/* HEADER */}
-      <header className="fixed top-0 w-full z-50 border-b border-slate-200/80 bg-white/70 backdrop-blur-2xl">
-        <div className="max-w-[1440px] mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-8">
+    <main className="min-h-screen bg-white text-slate-900 overflow-x-hidden selection:bg-[#003366]/10">
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .heading-elite { letter-spacing: -1.056px; font-weight: 510; }
+        .tnum { font-variant-numeric: tabular-nums; }
+        .shadow-premium { box-shadow: 0 4px 24px -2px rgba(0, 51, 102, 0.04), 0 2px 8px -2px rgba(0, 51, 102, 0.02); }
+      `}</style>
+
+      {/* REFINED HEADER */}
+      <header className="fixed top-0 w-full z-50 border-b border-slate-100 bg-white/80 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-12">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-jigsaw-navy rounded-xl flex items-center justify-center shadow-lg shadow-jigsaw-navy/20">
-                <Building2 size={18} className="text-white" />
+              <div className="w-8 h-8 bg-[#003366] rounded-lg flex items-center justify-center shadow-lg shadow-[#003366]/20">
+                <Building2 size={16} className="text-white" />
               </div>
-              <div className="flex flex-col">
-                <span className="text-base font-bold tracking-tight text-jigsaw-navy leading-none">JIGSAW</span>
-                <span className="text-[9px] font-black tracking-[0.3em] text-slate-400 mt-1">ENTERPRISE</span>
-              </div>
+              <span className="text-lg font-bold tracking-tight text-[#003366]">JIGSAW <span className="text-slate-300 font-light">//</span> LUMINA</span>
             </Link>
             
-            <nav className="hidden xl:flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.15em] text-slate-400">
-              <Link href="/mission-control" className="hover:text-jigsaw-navy transition-colors flex items-center gap-2">
-                <Activity size={14} /> Mission Control
-              </Link>
-              <Link href="/cli" className="hover:text-jigsaw-navy transition-colors flex items-center gap-2">
-                <Terminal size={14} /> CLI Terminal
-              </Link>
-              <a href="#" className="hover:text-jigsaw-navy transition-colors">Global Inventory</a>
-              <a href="#" className="hover:text-jigsaw-navy transition-colors">Yield Protocols</a>
+            <nav className="hidden lg:flex items-center gap-10">
+              <NavLink href="/mission-control" icon={Activity}>Mission Control</NavLink>
+              <NavLink href="/cli" icon={Terminal}>Terminal</NavLink>
+              <NavLink href="#" icon={Globe}>Venues</NavLink>
+              <NavLink href="#" icon={ShieldCheck}>Security</NavLink>
             </nav>
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="hidden lg:flex items-center gap-2.5 px-4 py-2 bg-slate-50 border border-slate-100 rounded-full">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-              <span className="text-[10px] font-black tracking-widest text-slate-500 uppercase">Gateway Active // London-03</span>
-            </div>
-            <button className="px-6 py-2.5 bg-jigsaw-navy text-white text-[11px] font-black uppercase tracking-widest rounded-full shadow-lg shadow-jigsaw-navy/20 hover:bg-slate-900 transition-all active:scale-95">
-              Access Portal
-            </button>
-          </div>
+          <button className="px-7 py-2.5 bg-[#003366] text-white text-[10px] font-black uppercase tracking-[0.25em] rounded-full hover:bg-slate-900 transition-all active:scale-95">
+            Enter Portal
+          </button>
         </div>
       </header>
 
-      {/* HERO / SKIN ON BONE */}
-      <section className="pt-40 pb-24 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          
-          <div className="lg:col-span-7 space-y-12">
+      {/* HERO SECTION */}
+      <section className="relative pt-48 pb-32 px-6 bg-slate-50">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div className="space-y-10">
             <motion.div 
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-3 px-4 py-2 bg-jigsaw-navy/5 border border-jigsaw-navy/10 rounded-2xl"
+              className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white border border-slate-200 shadow-sm"
             >
-              <ShieldCheck size={16} className="text-jigsaw-navy" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-jigsaw-navy">Tier-1 Institutional Venue Engine</span>
+              <div className="w-2 h-2 bg-[#003366] rounded-full animate-pulse" />
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#003366]">Enterprise Venue Sourcing</span>
             </motion.div>
             
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-6xl md:text-[92px] heading-elite text-slate-900 leading-[0.85]"
+              className="text-6xl md:text-8xl heading-elite text-slate-900 leading-[0.9]"
             >
-              The architecture <br /> of <span className="text-jigsaw-navy italic">global sourcing.</span>
+              Corporate venue <br />sourcing. <span className="text-[#003366] italic">Engineered.</span>
             </motion.h1>
 
             <motion.p 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-xl text-slate-500 max-w-xl leading-relaxed"
+              className="text-xl text-slate-500 leading-relaxed max-w-xl"
             >
-              Elite venue intelligence for sovereign organizations. High-density data matching across 24,000+ verified locations with zero commission leakage.
+              The definitive platform for institutional procurement. Jigsaw Lumina combines algorithmic negotiation with a global network of 24,000+ verified locations.
             </motion.p>
 
-            <div className="flex flex-wrap gap-4 pt-4">
-              <button className="px-10 py-5 bg-jigsaw-navy text-white text-xs font-black uppercase tracking-widest rounded-3xl shadow-elevated hover:bg-slate-900 transition-all flex items-center gap-3 group">
-                Request Briefing <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            <div className="flex flex-wrap gap-4">
+              <button className="px-10 py-5 bg-[#003366] text-white text-[11px] font-black uppercase tracking-widest rounded-3xl shadow-xl shadow-[#003366]/20 hover:bg-slate-900 transition-all flex items-center gap-3 group">
+                Access Portal <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
-              <Link href="/cli" className="px-10 py-5 bg-white border border-slate-200 text-slate-900 text-xs font-black uppercase tracking-widest rounded-3xl shadow-premium hover:bg-slate-50 transition-all flex items-center gap-3">
-                Source Terminal <Terminal size={18} />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-3 gap-8 pt-12 border-t border-slate-100">
-              <div className="space-y-1">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Inventory Value</p>
-                <p className="text-2xl font-medium tnum text-jigsaw-navy">£60M+</p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Client Alpha</p>
-                <p className="text-2xl font-medium tnum text-jigsaw-navy">35%</p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Verified Nodes</p>
-                <p className="text-2xl font-medium tnum text-jigsaw-navy">24k+</p>
-              </div>
+              <button className="px-10 py-5 bg-white border border-slate-200 text-slate-900 text-[11px] font-black uppercase tracking-widest rounded-3xl hover:bg-slate-50 transition-all flex items-center gap-3 shadow-sm">
+                Book Consultation <ChevronRight size={18} />
+              </button>
             </div>
           </div>
 
-          {/* ASYMMETRICAL DATA WIDGETS */}
-          <div className="lg:col-span-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <div className="jigsaw-card p-6 rounded-[32px] space-y-6">
-                <div className="flex justify-between items-center">
-                  <div className="p-2.5 bg-jigsaw-navy/5 rounded-xl text-jigsaw-navy">
-                    <Globe size={18} />
-                  </div>
-                  <span className="text-[9px] font-black text-slate-400 tracking-widest">UK_01</span>
-                </div>
-                <div>
-                  <h4 className="text-lg font-medium mb-1">Southampton Waterfront</h4>
-                  <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest">MICE_SECTOR // SHARD_21450</p>
-                </div>
-                <div className="pt-4 border-t border-slate-50 grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Valuation</p>
-                    <p className="text-sm font-bold tnum">£100M</p>
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Target APY</p>
-                    <p className="text-sm font-bold tnum text-emerald-600">8.2%</p>
-                  </div>
-                </div>
+          {/* SaaS PRODUCT PREVIEW */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="relative"
+          >
+            <div className="rounded-[40px] border border-slate-200 bg-white p-4 shadow-2xl overflow-hidden">
+              <div className="h-10 border-b border-slate-100 flex items-center gap-2 px-4 mb-4">
+                <div className="w-2.5 h-2.5 rounded-full bg-slate-100" />
+                <div className="w-2.5 h-2.5 rounded-full bg-slate-100" />
+                <div className="w-2.5 h-2.5 rounded-full bg-slate-100" />
+                <div className="ml-4 h-4 w-40 bg-slate-50 rounded-full" />
               </div>
-
-              <div className="jigsaw-card p-6 rounded-[32px] bg-jigsaw-navy text-white border-none shadow-elevated">
-                <div className="flex justify-between items-start mb-12">
-                  <Cpu size={24} className="text-white/40" />
-                  <div className="px-2 py-1 bg-white/10 rounded text-[8px] font-black tracking-widest">REALTIME_SYNC</div>
+              <div className="p-8 bg-slate-50 rounded-[24px] space-y-12">
+                <div className="space-y-4 text-center">
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Yield Optimizer</p>
+                  <h3 className="text-4xl font-medium text-[#003366] tnum">£{(budget * (alpha / 100)).toLocaleString()}</h3>
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Projected Annual Savings</p>
                 </div>
-                <p className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-1">Network Capacity</p>
-                <h3 className="text-4xl font-medium tracking-tight mb-6 tnum">98.4<span className="text-white/30">%</span></h3>
-                <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    whileInView={{ width: '98.4%' }}
-                    className="h-full bg-white"
-                  />
+                <div className="space-y-8">
+                  <div className="space-y-4">
+                    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+                      <span className="text-slate-400">Annual Budget</span>
+                      <span className="text-[#003366]">£{budget.toLocaleString()}</span>
+                    </div>
+                    <div className="h-2 bg-white rounded-full border border-slate-100 overflow-hidden">
+                      <div className="h-full bg-[#003366]" style={{ width: '65%' }} />
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+                      <span className="text-slate-400">Efficiency Alpha</span>
+                      <span className="text-[#003366]">{alpha}%</span>
+                    </div>
+                    <div className="h-2 bg-white rounded-full border border-slate-100 overflow-hidden">
+                      <div className="h-full bg-[#003366]" style={{ width: '85%' }} />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div className="space-y-4 pt-12 md:pt-0">
-              <MetricCard label="Market Velocity" value="Critical" sub="High Demand Sector" icon={Zap} trend="+12.4%" />
-              <div className="jigsaw-card p-6 rounded-[32px] bg-slate-50 border-slate-200">
-                <div className="flex items-center gap-3 mb-6">
-                  <Activity size={16} className="text-jigsaw-navy" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Live Pulse</span>
-                </div>
-                <div className="h-24 flex items-end gap-1">
-                  {[40, 60, 35, 70, 85, 45, 60, 90, 50, 65, 80, 55].map((h, i) => (
-                    <motion.div 
-                      key={i}
-                      initial={{ height: 0 }}
-                      whileInView={{ height: `${h}%` }}
-                      className="flex-1 bg-jigsaw-navy/10 rounded-t-sm"
-                    />
-                  ))}
-                </div>
+            <div className="absolute -bottom-10 -right-10 p-6 bg-white rounded-3xl border border-slate-100 shadow-2xl flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
+                <CheckCircle2 size={20} />
               </div>
-              <MetricCard label="Procurement Alpha" value="35.2%" sub="Avg negotiated savings" icon={TrendingUp} delay={0.2} />
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Sourcing</p>
+                <p className="text-sm font-bold text-slate-900">ISO 27001 Verified</p>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* PROCUREMENT INTERACTIVE */}
-      <section className="py-24 bg-white border-y border-slate-200/60">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-          <div className="lg:col-span-5 space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl heading-elite">Yield & Savings <br />Optimization.</h2>
-              <p className="text-slate-500 text-lg">Simulate your institutional event spend to visualize procurement efficiency across our global network.</p>
-            </div>
-            <div className="space-y-4">
-              <SliderWidget label="Annual Event Budget (£M)" value={valuation} onChange={setValuation} min={10} max={500} step={10} />
-              <SliderWidget label="Negotiated Alpha (%)" value={yieldRate} onChange={setYieldRate} min={0} max={40} step={0.1} suffix="%" />
-            </div>
+      {/* FEATURES GRID */}
+      <section className="py-32 px-6">
+        <div className="max-w-7xl mx-auto space-y-20">
+          <div className="text-center max-w-2xl mx-auto space-y-4">
+            <h2 className="text-4xl md:text-5xl heading-elite">Infrastructure for <br />Global Procurement.</h2>
+            <p className="text-slate-500 text-lg">Consolidated buying power, algorithmic matching, and enterprise-grade security protocols.</p>
           </div>
           
-          <div className="lg:col-span-7">
-            <motion.div 
-              className="jigsaw-card p-8 md:p-12 rounded-[40px] bg-slate-50/50 flex flex-col items-center text-center space-y-12"
-            >
-              <div className="space-y-2">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Projected Annual Savings</p>
-                <motion.h3 
-                  key={valuation * yieldRate}
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  className="text-6xl md:text-8xl font-medium text-jigsaw-navy tracking-tighter tnum"
-                >
-                  £{(valuation * (yieldRate / 100)).toFixed(1)}M
-                </motion.h3>
-              </div>
-
-              <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 pt-12 border-t border-slate-200/60">
-                <div className="space-y-2">
-                  <Fingerprint size={20} className="mx-auto text-slate-300" />
-                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Verified ID</p>
-                  <p className="text-xs font-bold">JIGSAW_AUTH_V4</p>
-                </div>
-                <div className="space-y-2">
-                  <Network size={20} className="mx-auto text-slate-300" />
-                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Node Sync</p>
-                  <p className="text-xs font-bold">ACTIVE_98.4%</p>
-                </div>
-                <div className="space-y-2">
-                  <Lock size={20} className="mx-auto text-slate-300" />
-                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Protocol</p>
-                  <p className="text-xs font-bold">ISO_27001</p>
-                </div>
-              </div>
-            </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <FeatureCard 
+              title="Global Procurement" 
+              description="Access institutional rates and priority availability across 50+ countries through Jigsaw's £60M+ buying volume."
+              icon={Globe}
+              delay={0.1}
+            />
+            <FeatureCard 
+              title="Algorithmic Negotiation" 
+              description="Lumina's engine benchmarks 24,000+ data points to ensure every contract achieves maximum procurement alpha."
+              icon={Target}
+              delay={0.2}
+            />
+            <FeatureCard 
+              title="Enterprise Security" 
+              description="ISO 27001 certified data handling and EU AI Act compliant matching protocols for secure corporate governance."
+              icon={ShieldCheck}
+              delay={0.3}
+            />
           </div>
         </div>
       </section>
 
-      {/* FOOTER / TELEMETRY */}
-      <footer className="py-20 px-6 bg-slate-900 text-white selection:bg-white/20">
-        <div className="max-w-[1440px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-            <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
-                  <Building2 size={16} className="text-white" />
-                </div>
-                <span className="text-sm font-bold tracking-tight">JIGSAW</span>
-              </div>
-              <p className="text-slate-400 text-xs leading-relaxed max-w-xs">
-                Elite venue intelligence and procurement infrastructure for global enterprise organizations. Headquartered in Mayfair, London.
-              </p>
-            </div>
-            
+      {/* VENUE SHOWCASE */}
+      <section className="py-32 bg-slate-50 px-6 border-y border-slate-100">
+        <div className="max-w-7xl mx-auto space-y-16">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-8">
             <div className="space-y-4">
-              <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">Infrastructure</h5>
-              <div className="flex flex-col gap-2 text-xs font-medium text-slate-400">
-                <a href="#" className="hover:text-white transition-colors">Mission Control</a>
-                <a href="#" className="hover:text-white transition-colors">Sourcing Terminal</a>
-                <a href="#" className="hover:text-white transition-colors">API Gateway</a>
-                <a href="#" className="hover:text-white transition-colors">Node Health</a>
-              </div>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#003366]">Inventory Showcase</p>
+              <h2 className="text-4xl md:text-5xl heading-elite">Premium Case Shards.</h2>
             </div>
+            <button className="text-[11px] font-black uppercase tracking-widest text-[#003366] flex items-center gap-2 hover:gap-3 transition-all">
+              View All Locations <ArrowRight size={14} />
+            </button>
+          </div>
 
-            <div className="space-y-4">
-              <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">Compliance</h5>
-              <div className="flex flex-col gap-2 text-xs font-medium text-slate-400">
-                <a href="#" className="hover:text-white transition-colors">ISO 27001:2022</a>
-                <a href="#" className="hover:text-white transition-colors">ISO 9001 Quality</a>
-                <a href="#" className="hover:text-white transition-colors">Data Processing</a>
-                <a href="#" className="hover:text-white transition-colors">GDPR / EU AI Act</a>
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <VenueCard title="Southampton Waterfront" location="UK // SOUTH" cap={5000} yieldRate={8.2} delay={0.1} />
+            <VenueCard title="Mayfair Executive Suite" location="UK // LONDON" cap={150} yieldRate={9.4} delay={0.2} />
+            <VenueCard title="Shinjuku Business Hub" location="JP // TOKYO" cap={2500} yieldRate={7.1} delay={0.3} />
+          </div>
+        </div>
+      </section>
 
-            <div className="space-y-4">
-              <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">Network Status</h5>
-              <div className="p-4 bg-white/5 border border-white/10 rounded-2xl space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-[9px] font-bold text-white/40 uppercase">Operational</span>
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[9px] font-bold text-white/40 uppercase">Latency</span>
-                  <span className="text-[10px] font-bold tnum">42ms</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[9px] font-bold text-white/40 uppercase">Region</span>
-                  <span className="text-[10px] font-bold">AWS_EU_WEST_2</span>
-                </div>
+      {/* CORPORATE FOOTER */}
+      <footer className="bg-white border-t border-slate-100 pt-24 pb-12 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-start mb-24">
+          <div className="md:col-span-5 space-y-8">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-[#003366] rounded-lg flex items-center justify-center">
+                <Building2 size={16} className="text-white" />
               </div>
+              <span className="text-xl font-bold tracking-tight text-[#003366]">JIGSAW</span>
+            </div>
+            <p className="text-sm text-slate-500 leading-relaxed max-w-sm font-medium">
+              3rd Floor, 45 Albemarle Street, <br />
+              Mayfair, London W1S 4JL, UK <br />
+              +44 (0)800 121 4470
+            </p>
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-[#003366] transition-colors"><Mail size={18} /></a>
+              <a href="#" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-[#003366] transition-colors"><Globe size={18} /></a>
             </div>
           </div>
 
-          <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex gap-8 text-[9px] font-black uppercase tracking-[0.25em] text-white/20">
-              <span>SECURE_SESSION_v4.2</span>
-              <span>ENC_AES_256</span>
-              <span>TLS_1.3_READY</span>
+          <div className="md:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12">
+            <div className="space-y-6">
+              <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">Services</h5>
+              <div className="flex flex-col gap-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                <a href="#" className="hover:text-[#003366]">Procurement</a>
+                <a href="#" className="hover:text-[#003366]">Sourcing</a>
+                <a href="#" className="hover:text-[#003366]">Emergency</a>
+                <a href="#" className="hover:text-[#003366]">Logistics</a>
+              </div>
             </div>
-            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">© 2026 Jigsaw Conferences Ltd. London, W1S 4JL.</p>
+            <div className="space-y-6">
+              <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">Technology</h5>
+              <div className="flex flex-col gap-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                <a href="#" className="hover:text-[#003366]">Lumina Engine</a>
+                <a href="#" className="hover:text-[#003366]">Terminal CLI</a>
+                <a href="#" className="hover:text-[#003366]">Yield Optim</a>
+                <a href="#" className="hover:text-[#003366]">API Access</a>
+              </div>
+            </div>
+            <div className="space-y-6">
+              <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">Governance</h5>
+              <div className="flex flex-col gap-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                <a href="#" className="hover:text-[#003366]">ISO 27001</a>
+                <a href="#" className="hover:text-[#003366]">Privacy</a>
+                <a href="#" className="hover:text-[#003366]">Terms</a>
+                <a href="#" className="hover:text-[#003366]">Security</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto pt-10 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300">© 2026 Jigsaw Conferences Ltd.</p>
+          <div className="flex items-center gap-6">
+            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500 bg-emerald-50 px-2 py-1 rounded">ISO 27001 Certified</span>
+            <span className="text-[9px] font-black uppercase tracking-widest text-blue-500 bg-blue-50 px-2 py-1 rounded">GDPR Compliant</span>
           </div>
         </div>
       </footer>
