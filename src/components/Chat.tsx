@@ -1,10 +1,12 @@
 'use client'
+
 import { useChat } from '@ai-sdk/react'
+import { useEffect, useRef, useState } from 'react'
 import { Send, Bot, User } from 'lucide-react'
-import { useEffect, useRef } from 'react'
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat()
+  const { messages, sendMessage } = useChat()
+  const [input, setInput] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -12,6 +14,16 @@ export default function Chat() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
   }, [messages])
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const text = input.trim()
+    if (!text) return
+
+    setInput('')
+    await sendMessage({ text })
+  }
 
   return (
     <div className="glass h-[600px] flex flex-col rounded-3xl overflow-hidden">
@@ -41,7 +53,7 @@ export default function Chat() {
         <div className="relative">
           <input
             value={input}
-            onChange={handleInputChange}
+            onChange={(e) => setInput(e.target.value)}
             placeholder="Search terminal..."
             className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl py-4 pl-6 pr-14 focus:outline-none focus:border-accent/50 transition-all text-sm text-white"
           />
