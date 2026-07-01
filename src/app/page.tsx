@@ -20,7 +20,7 @@ export default function Landing() {
           </div>
           <span className="text-2xl font-black tracking-tighter text-white uppercase">Lumina</span>
         </div>
-        <Link href="/onboarding" className="glass px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-white/10 hover:border-[#FF5A00]/50 hover:bg-[#FF5A00] hover:text-black transition-all duration-700">
+        <Link href="/onboarding" className="px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-white text-black hover:bg-[#FF5A00] transition-all duration-700">
           Access Terminal
         </Link>
       </nav>
@@ -54,7 +54,7 @@ export default function Landing() {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5A00] via-[#FF8A4D] to-white italic font-light">Real Estate</span> <br />
                 Intelligence
               </h1>
-              <p className="text-zinc-400 text-lg md:text-2xl max-w-xl leading-relaxed uppercase tracking-tight font-medium">
+              <p className="text-[#F3F4F6] text-lg md:text-2xl max-w-xl leading-relaxed uppercase tracking-tight font-medium opacity-80">
                 Your personal AI companion for institutional-grade tokenized ownership. Seamless. Liquid. Unstoppable.
               </p>
             </motion.div>
@@ -91,7 +91,7 @@ export default function Landing() {
                 <div className="absolute top-8 left-8 right-8 flex justify-between items-start z-10">
                   <div className="glass px-4 py-2 rounded-full border-white/10 flex items-center gap-2">
                     <Activity size={14} className="text-[#FF5A00]" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Live Forecast</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-white">Live Forecast</span>
                   </div>
                   <div className="bg-[#FF5A00] text-black px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest">
                     Premium A+
@@ -106,11 +106,11 @@ export default function Landing() {
                   
                   <div className="grid grid-cols-2 gap-8 border-t border-white/5 pt-8">
                     <div className="space-y-1">
-                      <p className="text-[9px] text-zinc-500 uppercase tracking-widest font-black">Target APY</p>
+                      <p className="text-[9px] text-[#F3F4F6] uppercase tracking-widest font-black opacity-60">Target APY</p>
                       <p className="text-5xl font-black text-[#FF5A00] tracking-tighter shadow-[#FF5A00]/20 drop-shadow-lg">8.2%</p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-[9px] text-zinc-500 uppercase tracking-widest font-black">Entry Point</p>
+                      <p className="text-[9px] text-[#F3F4F6] uppercase tracking-widest font-black opacity-60">Entry Point</p>
                       <p className="text-3xl font-black text-white tracking-tighter">£50,000</p>
                     </div>
                   </div>
@@ -120,7 +120,7 @@ export default function Landing() {
                       <Globe size={20} className="text-[#FF5A00]" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-[9px] text-zinc-500 uppercase tracking-widest font-black">Blockchain Network</p>
+                      <p className="text-[9px] text-[#F3F4F6] uppercase tracking-widest font-black opacity-60">Blockchain Network</p>
                       <p className="text-xs font-bold text-white uppercase tracking-wider">J.P. Morgan Kinexys</p>
                     </div>
                     <div className="flex h-2 w-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
@@ -147,7 +147,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto space-y-20">
           <div className="text-center space-y-4">
             <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">Architected for <span className="text-[#FF5A00]">Winners</span></h2>
-            <p className="text-zinc-500 uppercase tracking-[0.2em] text-[10px] font-black">Institutional Technology | Consumer Simplicity</p>
+            <p className="text-[#F3F4F6] uppercase tracking-[0.2em] text-[10px] font-black opacity-60">Institutional Technology | Consumer Simplicity</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -162,10 +162,10 @@ export default function Landing() {
       <footer className="py-20 px-6 border-t border-white/5 text-center">
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="text-2xl font-black tracking-tighter text-white uppercase">Lumina</div>
-          <p className="text-zinc-600 text-[9px] uppercase tracking-[0.3em] font-black max-w-xl mx-auto">
+          <p className="text-[#F3F4F6] text-[9px] uppercase tracking-[0.3em] font-black max-w-xl mx-auto opacity-40">
             Lumina is an AI-integrated real estate investment platform. Tokenized assets are subject to market volatility. T+0 settlement available on verified Kinexys nodes.
           </p>
-          <div className="pt-10 flex justify-center gap-8 text-zinc-500 text-[10px] uppercase tracking-widest font-bold">
+          <div className="pt-10 flex justify-center gap-8 text-[#F3F4F6] text-[10px] uppercase tracking-widest font-bold opacity-60">
             <a href="#" className="hover:text-[#FF5A00] transition-colors">Terms</a>
             <a href="#" className="hover:text-[#FF5A00] transition-colors">Privacy</a>
             <a href="#" className="hover:text-[#FF5A00] transition-colors">Network Status</a>
@@ -183,7 +183,7 @@ function Feature({ icon, title, desc }: any) {
       <div className="text-[#FF5A00] group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">{icon}</div>
       <div className="space-y-4">
         <h3 className="text-2xl font-black text-white uppercase tracking-tighter">{title}</h3>
-        <p className="text-zinc-500 text-sm leading-relaxed uppercase tracking-widest font-bold">{desc}</p>
+        <p className="text-[#F3F4F6] text-sm leading-relaxed uppercase tracking-widest font-bold opacity-60">{desc}</p>
       </div>
     </div>
   )
