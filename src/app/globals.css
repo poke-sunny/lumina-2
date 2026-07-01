@@ -3,21 +3,23 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 0%;
-  --foreground: 210 20% 98%;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
 }
 
 body {
-  background-color: #000000;
-  color: #F3F4F6;
+  background-color: #ffffff;
+  color: #000000;
+  font-feature-settings: "cv01", "ss03", "tnum";
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.jigsaw-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 51, 102, 0.08);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
-.neon-border {
-  box-shadow: 0 0 15px rgba(255, 90, 0, 0.2);
+.heading-tight {
+  letter-spacing: -1.056px;
+  font-weight: 510;
 }

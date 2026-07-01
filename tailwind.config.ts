@@ -9,10 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#000000',
-        foreground: '#F3F4F6',
-        accent: '#FF5A00',
-        glass: 'rgba(255, 255, 255, 0.05)',
+        background: '#ffffff',
+        foreground: '#000000',
+        'jigsaw-navy': '#003366',
+        'jigsaw-grey': '#f9fafb',
+        'jigsaw-border': 'rgba(0, 51, 102, 0.08)',
       },
     },
   },
