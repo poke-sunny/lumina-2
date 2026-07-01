@@ -77,12 +77,21 @@ export default function ConsumerLanding() {
   const [calcSavings, setCalcSavings] = useState(25000)
   const [calcTargetPrice, setCalcTargetPrice] = useState(350000)
 
-  // AI Chat
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
+  // AI Chat with SDK v4 compatibility (using local state for input)
+  const [localInput, setLocalInput] = useState('');
+  const { messages, append } = useChat({
     initialMessages: [
       { id: '1', role: 'assistant', content: 'Hi! I am Lumina, your AI home-buying companion. How can I help you today?' }
     ]
   })
+
+  const handleChatSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!localInput.trim()) return;
+    append({ role: 'user', content: localInput });
+    setLocalInput('');
+  };
+
   const chatEndRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -397,11 +406,11 @@ export default function ConsumerLanding() {
             <div ref={chatEndRef} />
           </div>
 
-          <form onSubmit={handleSubmit} className="p-6 bg-black/40 border-t border-white/5">
+          <form onSubmit={handleChatSubmit} className="p-6 bg-black/40 border-t border-white/5">
             <div className="relative">
               <input 
-                value={input}
-                onChange={handleInputChange}
+                value={localInput}
+                onChange={(e) => setLocalInput(e.target.value)}
                 placeholder="Ask me anything..."
                 className="w-full bg-zinc-900 border border-white/10 rounded-2xl py-4 px-6 pr-14 focus:outline-none focus:border-[#00ff9d]/50 transition-all text-sm font-medium"
               />
