@@ -16,8 +16,9 @@
     "framer-motion": "latest",
     "clsx": "latest",
     "tailwind-merge": "latest",
-    "ai": "latest",
+    "ai": "^4.0.0",
     "@ai-sdk/openai": "latest",
+    "@ai-sdk/react": "^4.0.0",
     "openai": "latest",
     "zod": "latest"
   },
