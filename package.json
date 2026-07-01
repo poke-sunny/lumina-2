@@ -17,6 +17,7 @@
     "clsx": "latest",
     "tailwind-merge": "latest",
     "ai": "latest",
+    "@ai-sdk/openai": "latest",
     "openai": "latest",
     "zod": "latest"
   },
