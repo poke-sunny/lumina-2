@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     tools: {
       getSouthamptonInfo: tool({
         description: 'Get details about the Southampton Waterfront development',
-        parameters: z.object({}),
+        parameters: z.parse({}),
         execute: async () => ({
           status: 'Active',
           valuation: '£100M',
@@ -37,14 +37,14 @@ export async function POST(req: Request) {
           deposit: z.number(),
           interestRate: z.number(),
         }),
-        execute: async ({ price, deposit, interestRate }: { price: number; deposit: number; interestRate: number }) => {
+        execute: async ({ price, deposit, interestRate }) => {
           const loan = price - deposit
           const monthlyRate = interestRate / 100 / 12
           const monthlyPayment = (loan * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -120))
           return {
             monthlyPayment: monthlyPayment.toFixed(2),
             totalPaid: (monthlyPayment * 120).toFixed(2),
-            equityIn10Years: price * 1.4, // Assume 4% appreciation
+            equityIn10Years: (price * 1.4).toFixed(2),
           }
         },
       }),
