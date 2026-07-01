@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     tools: {
       getSouthamptonInfo: tool({
         description: 'Get details about the Southampton Waterfront development',
-        parameters: z.object({}),
+        inputSchema: z.object({}),
         execute: async () => ({
           status: 'Active',
           valuation: '£100M',
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       }),
       calculateAffordability: tool({
         description: 'Calculate 10-year affordability for a property',
-        parameters: z.object({
+        inputSchema: z.object({
           price: z.number(),
           deposit: z.number(),
           interestRate: z.number(),
