@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     tools: {
       getSouthamptonInfo: tool({
         description: 'Get details about the Southampton Waterfront development',
-        parameters: z.parse({}),
+        parameters: z.object({}),
         execute: async () => ({
           status: 'Active',
           valuation: '£100M',
