@@ -28,7 +28,7 @@ export default function Sidebar() {
             )}
           >
             <item.icon size={20} />
-            <span className="font-medium">{item.label}</span>
+            <span className="font-medium text-white">{item.label}</span>
           </Link>
         ))}
       </nav>

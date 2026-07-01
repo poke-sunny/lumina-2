@@ -9,13 +9,13 @@ export async function POST(req: Request) {
 
   const result = streamText({
     model: openai('gpt-4o'),
-    system: `You are Lumina AI, a professional real estate investment assistant for Gen Z investors.
+    system: \`You are Lumina AI, a professional real estate investment assistant for Gen Z investors.
     You have access to the following tools:
     1. Property Matcher: Find properties based on budget and location.
     2. Affordability Calculator: Project 10-year costs.
     3. Development Info: Details on Southampton Waterfront (£100M tokenized development).
     4. Offer Drafter: Professional negotiation drafting.
-    Be concise, helpful, and use a premium tone.`,
+    Be concise, helpful, and use a premium tone.\`,
     messages,
     tools: {
       getSouthamptonInfo: tool({
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
           deposit: z.number(),
           interestRate: z.number(),
         }),
-        execute: async ({ price, deposit, interestRate }) => {
+        execute: async ({ price, deposit, interestRate }: { price: number; deposit: number; interestRate: number }) => {
           const loan = price - deposit
           const monthlyRate = interestRate / 100 / 12
           const monthlyPayment = (loan * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -120))

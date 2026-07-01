@@ -18,7 +18,7 @@ export default function Onboarding() {
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
-      setCurrentStep(s => s + 1)
+      setCurrentStep((s: number) => s + 1)
     } else {
       router.push('/dashboard')
     }
@@ -36,7 +36,7 @@ export default function Onboarding() {
           <motion.div 
             className="h-full bg-accent" 
             initial={{ width: 0 }}
-            animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+            animate={{ width: \`\${((currentStep + 1) / steps.length) * 100}%\` }}
           />
         </div>
 
@@ -66,7 +66,7 @@ export default function Onboarding() {
         
         {currentStep > 0 && (
           <button 
-            onClick={() => setCurrentStep(s => s - 1)}
+            onClick={() => setCurrentStep((s: number) => s - 1)}
             className="text-zinc-600 hover:text-white transition-colors flex items-center gap-2 text-sm"
           >
             <ArrowLeft size={16} /> Back
