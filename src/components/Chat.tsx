@@ -27,9 +27,9 @@ export default function Chat() {
           </div>
         )}
         {messages.map(m => (
-          <div key={m.id} className={\`flex gap-4 \${m.role === 'user' ? 'justify-end' : ''}\`}>
+          <div key={m.id} className={`flex gap-4 ${m.role === 'user' ? 'justify-end' : ''}`}>
             {m.role !== 'user' && <Bot size={20} className="text-accent mt-1" />}
-            <div className={\`p-4 rounded-2xl max-w-[80%] text-sm \${m.role === 'user' ? 'bg-accent text-white' : 'glass text-zinc-300'}\`}>
+            <div className={`p-4 rounded-2xl max-w-[80%] text-sm ${m.role === 'user' ? 'bg-accent text-white' : 'glass text-zinc-300'}`}>
               {m.content}
             </div>
             {m.role === 'user' && <User size={20} className="text-zinc-600 mt-1" />}
