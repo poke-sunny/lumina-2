@@ -1,34 +1,45 @@
 {
-  "name": "lumina-2",
-  "version": "0.1.0",
+  "name": "jigsaw-rebuild",
   "private": true,
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "vite dev",
+    "sanitize:venue-data": "node scripts/sanitize-venue-data.mjs",
+    "build:venue-index": "node scripts/build-venue-index.mjs",
+    "build": "npm run sanitize:venue-data && npm run build:venue-index && npm run check:secrets && vite build",
+    "start": "node .output/server/index.mjs",
+    "typecheck": "tsc --noEmit",
+    "check:secrets": "node scripts/check-secrets.mjs",
+    "check": "npm run build && npm run typecheck"
   },
   "dependencies": {
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "lucide-react": "latest",
-    "framer-motion": "latest",
-    "clsx": "latest",
-    "tailwind-merge": "latest",
-    "ai": "latest",
-    "@ai-sdk/openai": "latest",
-    "@ai-sdk/react": "latest",
-    "openai": "latest",
-    "zod": "latest"
+    "@tanstack/react-router": "1.170.16",
+    "@tanstack/react-start": "1.168.26",
+    "clsx": "2.1.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "tailwind-merge": "3.6.0",
+    "i18next": "^24.2.2",
+    "react-i18next": "^15.4.0",
+    "i18next-browser-languagedetector": "^8.1.1",
+    "i18next-resources-to-backend": "^2.1.2",
+    "lucide-react": "^0.474.0",
+    "framer-motion": "^12.0.6"
   },
   "devDependencies": {
-    "typescript": "latest",
-    "@types/node": "latest",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
-    "postcss": "latest",
-    "tailwindcss": "latest",
-    "autoprefixer": "latest"
+    "@tailwindcss/vite": "4.3.1",
+    "@types/node": "25.0.2",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.3",
+    "nitro": "3.0.260610-beta",
+    "typescript": "6.0.3",
+    "vite": "8.1.0"
   }
 }
