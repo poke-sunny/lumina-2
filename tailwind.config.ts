@@ -9,12 +9,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#ffffff',
-        foreground: '#000000',
+        background: '#f8fafc',
+        foreground: '#0f172a',
         'jigsaw-navy': '#003366',
-        'jigsaw-grey': '#f9fafb',
+        'jigsaw-blue': '#004a94',
+        'jigsaw-slate': '#64748b',
         'jigsaw-border': 'rgba(0, 51, 102, 0.08)',
       },
+      boxShadow: {
+        'premium': '0 4px 20px -2px rgba(0, 51, 102, 0.04), 0 2px 10px -2px rgba(0, 51, 102, 0.02)',
+        'elevated': '0 20px 40px -12px rgba(0, 51, 102, 0.08)',
+      }
     },
   },
   plugins: [],

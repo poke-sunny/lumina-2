@@ -3,23 +3,58 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
+  --background: 210 40% 98%;
   --foreground: 222 47% 11%;
 }
 
 body {
-  background-color: #ffffff;
-  color: #000000;
-  font-feature-settings: "cv01", "ss03", "tnum";
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-feature-settings: "cv01" on, "ss03" on, "tnum" on;
+  -webkit-font-smoothing: antialiased;
+}
+
+.jigsaw-grid-bg {
+  background-image: radial-gradient(rgba(0, 51, 102, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
 .jigsaw-card {
   background: #ffffff;
   border: 1px solid rgba(0, 51, 102, 0.08);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 20px -2px rgba(0, 51, 102, 0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.heading-tight {
+.jigsaw-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -12px rgba(0, 51, 102, 0.08);
+  border-color: rgba(0, 51, 102, 0.15);
+}
+
+.heading-elite {
   letter-spacing: -1.056px;
   font-weight: 510;
+  line-height: 0.95;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #003366;
 }
