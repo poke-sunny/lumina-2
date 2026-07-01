@@ -9,37 +9,36 @@
     "node": "22.x"
   },
   "scripts": {
-    "dev": "vite dev",
-    "sanitize:venue-data": "node scripts/sanitize-venue-data.mjs",
-    "build:venue-index": "node scripts/build-venue-index.mjs",
-    "build": "npm run sanitize:venue-data && npm run build:venue-index && npm run check:secrets && vite build",
-    "start": "node .output/server/index.mjs",
-    "typecheck": "tsc --noEmit",
-    "check:secrets": "node scripts/check-secrets.mjs",
-    "check": "npm run build && npm run typecheck"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@tanstack/react-router": "1.170.16",
-    "@tanstack/react-start": "1.168.26",
-    "clsx": "2.1.1",
+    "next": "latest",
     "react": "19.2.7",
     "react-dom": "19.2.7",
+    "lucide-react": "^0.474.0",
+    "framer-motion": "^12.0.6",
+    "clsx": "2.1.1",
     "tailwind-merge": "3.6.0",
+    "ai": "latest",
+    "@ai-sdk/openai": "latest",
+    "openai": "latest",
+    "zod": "latest",
     "i18next": "^24.2.2",
     "react-i18next": "^15.4.0",
     "i18next-browser-languagedetector": "^8.1.1",
-    "i18next-resources-to-backend": "^1.2.1",
-    "lucide-react": "^0.474.0",
-    "framer-motion": "^12.0.6"
+    "i18next-resources-to-backend": "^1.2.1"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "4.3.1",
+    "typescript": "^5.7.3",
     "@types/node": "25.0.2",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "6.0.3",
-    "nitro": "3.0.260610-beta",
-    "typescript": "^5.7.3",
-    "vite": "8.1.0"
+    "postcss": "latest",
+    "tailwindcss": "latest",
+    "autoprefixer": "latest"
   }
 }
