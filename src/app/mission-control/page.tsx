@@ -80,11 +80,11 @@ const KPICard = ({
 )
 
 const DataVizWidget = ({ title, children, icon: Icon }: any) => (
-  <div className="flex flex-col p-6 rounded-xl border border-white/[0.08] bg-white/[0.02] overflow-hidden">
+  <div className="flex flex-col p-5 md:p-6 rounded-xl border border-white/[0.08] bg-white/[0.02] overflow-hidden">
     <div className="flex items-center justify-between mb-6">
       <div className="flex items-center gap-2">
         {Icon && <Icon size={14} className="text-[#8a8f98]" />}
-        <h3 className="text-xs font-bold uppercase tracking-widest text-[#8a8f98]">{title}</h3>
+        <h3 className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-[#8a8f98]">{title}</h3>
       </div>
       <button className="text-[#62666d] hover:text-[#f7f8f8] transition-colors">
         <Info size={14} />
@@ -135,28 +135,28 @@ export default function MissionControlDashboard() {
 
   return (
     <div 
-      className="min-h-screen bg-[#08090a] text-[#f7f8f8] p-8 lg:p-12 selection:bg-[#00ff9d]/30"
+      className="min-h-screen bg-[#08090a] text-[#f7f8f8] p-5 md:p-8 lg:p-12 selection:bg-[#00ff9d]/30 overflow-x-hidden w-full"
       style={{ fontFamily: 'Inter, system-ui, sans-serif', fontFeatureSettings: THEME.fontFeatures }}
     >
       {/* Header Area */}
-      <header className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-        <div>
+      <header className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-6">
+        <div className="space-y-1">
           <div className="flex items-center gap-2 mb-2">
             <Layers size={16} className="text-[#00ff9d]" />
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#00ff9d]">Intelligence Layer v4.0</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-medium tracking-tighter text-[#f7f8f8]">Mission Control</h1>
-          <p className="text-[#8a8f98] max-w-md mt-2 text-sm leading-relaxed">
+          <h1 className="text-3xl md:text-5xl font-medium tracking-tighter text-[#f7f8f8]">Mission Control</h1>
+          <p className="text-[#8a8f98] max-w-sm mt-2 text-xs md:text-sm leading-relaxed">
             Real-time sovereign wealth simulation for the Southampton Waterfront Shards.
           </p>
         </div>
 
-        <div className="flex items-center gap-4 bg-white/[0.03] p-1 rounded-lg border border-white/[0.08]">
+        <div className="flex items-center gap-2 bg-white/[0.03] p-1 rounded-lg border border-white/[0.08] w-full md:w-auto overflow-x-auto scrollbar-hide">
           {['OPTIMAL', 'HEALTHY', 'CAUTION'].map(tier => (
             <button
               key={tier}
               onClick={() => setActiveTier(tier)}
-              className={`px-4 py-1.5 rounded-md text-[10px] font-bold tracking-widest transition-all ${
+              className={`flex-1 md:flex-none px-3 md:px-4 py-1.5 rounded-md text-[9px] md:text-[10px] font-black tracking-widest transition-all whitespace-nowrap ${
                 activeTier === tier 
                   ? 'bg-[#00ff9d] text-black shadow-[0_0_20px_rgba(0,255,157,0.3)]' 
                   : 'text-[#62666d] hover:text-[#8a8f98]'
@@ -169,7 +169,7 @@ export default function MissionControlDashboard() {
       </header>
 
       {/* KPI Wall (High Density) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 md:mb-8">
         {metrics.map((m, i) => (
           <KPICard key={m.title} {...m} delay={i * 0.1} />
         ))}
@@ -178,10 +178,10 @@ export default function MissionControlDashboard() {
       {/* Primary Data Viz Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Wealth Projection Chart */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 order-2 lg:order-1">
           <DataVizWidget title="Equity Accumulation Projection" icon={BarChart3}>
-            <div className="h-[300px] w-full flex flex-col justify-end gap-1 pb-4">
-              <div className="flex items-end justify-between gap-2 h-full px-2">
+            <div className="h-[250px] md:h-[300px] w-full flex flex-col justify-end gap-1 pb-4">
+              <div className="flex items-end justify-between gap-1.5 h-full px-1">
                 {[40, 45, 52, 48, 60, 75, 82, 90, 85, 95, 100, 110].map((h, i) => (
                   <motion.div 
                     key={i}
@@ -194,7 +194,7 @@ export default function MissionControlDashboard() {
               </div>
               <div className="flex justify-between px-2 pt-4 border-t border-white/[0.05]">
                 {['JAN', 'MAR', 'MAY', 'JUL', 'SEP', 'NOV'].map(m => (
-                  <span key={m} className="text-[10px] font-bold text-[#62666d]">{m}</span>
+                  <span key={m} className="text-[9px] md:text-[10px] font-bold text-[#62666d]">{m}</span>
                 ))}
               </div>
             </div>
@@ -202,68 +202,70 @@ export default function MissionControlDashboard() {
         </div>
 
         {/* Asset Allocation */}
-        <DataVizWidget title="Asset Composition" icon={PieChart}>
-          <div className="flex flex-col h-full justify-center">
-            <div className="relative w-48 h-48 mx-auto mb-8">
-              <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-                <circle cx="50" cy="50" r="40" fill="transparent" stroke="rgba(255,255,255,0.05)" strokeWidth="12" />
-                <motion.circle 
-                  cx="50" cy="50" r="40" fill="transparent" 
-                  stroke="#00ff9d" strokeWidth="12" 
-                  strokeDasharray="251.2"
-                  initial={{ strokeDashoffset: 251.2 }}
-                  animate={{ strokeDashoffset: 251.2 * 0.25 }}
-                  transition={{ delay: 0.8, duration: 1.5, ease: "easeInOut" }}
-                  strokeLinecap="round"
-                />
-                <motion.circle 
-                  cx="50" cy="50" r="40" fill="transparent" 
-                  stroke="rgba(255,255,255,0.2)" strokeWidth="12" 
-                  strokeDasharray="251.2"
-                  initial={{ strokeDashoffset: 251.2 }}
-                  animate={{ strokeDashoffset: 251.2 * 0.75 }}
-                  transition={{ delay: 1, duration: 1.5, ease: "easeInOut" }}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-3xl font-medium">75%</span>
-                <span className="text-[10px] text-[#62666d] font-bold uppercase tracking-widest">SWS Shards</span>
+        <div className="order-1 lg:order-2">
+          <DataVizWidget title="Asset Composition" icon={PieChart}>
+            <div className="flex flex-col h-full justify-center">
+              <div className="relative w-40 md:w-48 h-40 md:h-48 mx-auto mb-6 md:mb-8 shrink-0">
+                <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                  <circle cx="50" cy="50" r="40" fill="transparent" stroke="rgba(255,255,255,0.05)" strokeWidth="12" />
+                  <motion.circle 
+                    cx="50" cy="50" r="40" fill="transparent" 
+                    stroke="#00ff9d" strokeWidth="12" 
+                    strokeDasharray="251.2"
+                    initial={{ strokeDashoffset: 251.2 }}
+                    animate={{ strokeDashoffset: 251.2 * 0.25 }}
+                    transition={{ delay: 0.8, duration: 1.5, ease: "easeInOut" }}
+                    strokeLinecap="round"
+                  />
+                  <motion.circle 
+                    cx="50" cy="50" r="40" fill="transparent" 
+                    stroke="rgba(255,255,255,0.2)" strokeWidth="12" 
+                    strokeDasharray="251.2"
+                    initial={{ strokeDashoffset: 251.2 }}
+                    animate={{ strokeDashoffset: 251.2 * 0.75 }}
+                    transition={{ delay: 1, duration: 1.5, ease: "easeInOut" }}
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-2xl md:text-3xl font-medium">75%</span>
+                  <span className="text-[9px] md:text-[10px] text-[#62666d] font-bold uppercase tracking-widest text-center">SWS Shards</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-[#00ff9d]" />
+                    <span className="text-[10px] md:text-xs text-[#8a8f98]">Southampton Waterfront</span>
+                  </div>
+                  <span className="text-[10px] md:text-xs font-medium">75%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-white/20" />
+                    <span className="text-[10px] md:text-xs text-[#8a8f98]">Liquid Reserve</span>
+                  </div>
+                  <span className="text-[10px] md:text-xs font-medium">25%</span>
+                </div>
               </div>
             </div>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#00ff9d]" />
-                  <span className="text-xs text-[#8a8f98]">Southampton Waterfront</span>
-                </div>
-                <span className="text-xs font-medium">75%</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-white/20" />
-                  <span className="text-xs text-[#8a8f98]">Liquid Reserve</span>
-                </div>
-                <span className="text-xs font-medium">25%</span>
-              </div>
-            </div>
-          </div>
-        </DataVizWidget>
+          </DataVizWidget>
+        </div>
       </div>
 
       {/* Footer Info */}
-      <footer className="mt-12 pt-8 border-t border-white/[0.05] flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="flex items-center gap-6">
+      <footer className="mt-12 pt-8 border-t border-white/[0.05] flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
           <div className="flex items-center gap-2">
             <Activity size={12} className="text-[#00ff9d]" />
-            <span className="text-[10px] text-[#62666d] font-bold uppercase tracking-widest">Simulation Active</span>
+            <span className="text-[9px] md:text-[10px] text-[#62666d] font-black uppercase tracking-widest">Simulation Active</span>
           </div>
           <div className="flex items-center gap-2">
             <ShieldCheck size={12} className="text-[#62666d]" />
-            <span className="text-[10px] text-[#62666d] font-bold uppercase tracking-widest">Encryption: AES-256-GCM</span>
+            <span className="text-[9px] md:text-[10px] text-[#62666d] font-black uppercase tracking-widest">Encryption: AES-256-GCM</span>
           </div>
         </div>
-        <div className="text-[10px] text-[#62666d] font-bold uppercase tracking-[0.3em]">
+        <div className="text-[9px] md:text-[10px] text-[#62666d] font-black uppercase tracking-[0.3em] text-center md:text-right">
           LUMINA // INTERACTION CO. 2026
         </div>
       </footer>
