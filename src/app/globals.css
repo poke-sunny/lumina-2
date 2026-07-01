@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 0%;
+  --foreground: 210 20% 98%;
+}
+
+body {
+  background-color: #000000;
+  color: #F3F4F6;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.neon-border {
+  box-shadow: 0 0 15px rgba(255, 90, 0, 0.2);
+}
