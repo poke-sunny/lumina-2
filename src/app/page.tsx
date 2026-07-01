@@ -17,10 +17,27 @@ import {
   PieChart,
   LayoutDashboard,
   Sparkles,
-  Zap
+  Zap,
+  Activity,
+  Shield,
+  Cpu,
+  Skull,
+  ArrowUpRight
 } from 'lucide-react'
 
-// Mocking useChat for now to bypass complex AI SDK v4 type issues and ensure build success
+// --- Types & Constants ---
+
+type SurvivalTier = 'dead' | 'critical' | 'low_compute' | 'normal' | 'high';
+
+const SURVIVAL_THRESHOLDS = {
+  high: 80,
+  normal: 50,
+  low_compute: 20,
+  critical: 5,
+  dead: 0,
+};
+
+// --- Mocking useChat for now to bypass complex AI SDK v4 type issues and ensure build success ---
 function useChatStub({ initialMessages }: any) {
   const [messages, setMessages] = useState(initialMessages);
   const [input, setInput] = useState('');
@@ -48,11 +65,12 @@ function useChatStub({ initialMessages }: any) {
 
 // --- Components ---
 
-function ProgressBar({ progress }: { progress: number }) {
+function ProgressBar({ progress, color = "#00ff9d" }: { progress: number, color?: string }) {
   return (
     <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
       <motion.div 
-        className="h-full bg-[#00ff9d]"
+        className="h-full"
+        style={{ backgroundColor: color }}
         initial={{ width: 0 }}
         animate={{ width: `${progress}%` }}
         transition={{ duration: 0.5 }}
@@ -77,6 +95,68 @@ function Slider({ label, min, max, step, value, onChange, prefix = "", suffix = 
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#00ff9d]"
       />
+    </div>
+  )
+}
+
+// --- Mission Control Widgets ---
+
+function SurvivalWidget({ score }: { score: number }) {
+  let tier: SurvivalTier = 'dead';
+  let color = '#ef4444'; // red
+  let icon = <Skull size={18} />;
+  let label = 'Dead';
+
+  if (score > SURVIVAL_THRESHOLDS.high) {
+    tier = 'high';
+    color = '#00ff9d'; // emerald
+    icon = <Shield size={18} />;
+    label = 'Optimal';
+  } else if (score > SURVIVAL_THRESHOLDS.normal) {
+    tier = 'normal';
+    color = '#10b981'; // green
+    icon = <Activity size={18} />;
+    label = 'Healthy';
+  } else if (score > SURVIVAL_THRESHOLDS.low_compute) {
+    tier = 'low_compute';
+    color = '#f59e0b'; // amber
+    icon = <Cpu size={18} />;
+    label = 'Low Power';
+  } else if (score > SURVIVAL_THRESHOLDS.dead) {
+    tier = 'critical';
+    color = '#f97316'; // orange
+    icon = <Zap size={18} />;
+    label = 'Critical';
+  }
+
+  return (
+    <div className="glass-card p-6 border-white/10 space-y-4 relative overflow-hidden">
+      <div className="absolute top-0 right-0 p-4 opacity-10">
+         {React.cloneElement(icon as React.ReactElement, { size: 80 })}
+      </div>
+      <div className="flex justify-between items-start">
+        <div className="space-y-1">
+          <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Lumina Readiness</p>
+          <h4 className="text-2xl font-plus font-bold" style={{ color }}>{label}</h4>
+        </div>
+        <div className="p-2 rounded-xl bg-white/5 border border-white/10" style={{ color }}>
+          {icon}
+        </div>
+      </div>
+      <div className="space-y-2">
+        <div className="flex justify-between text-xs font-bold">
+          <span className="text-zinc-500">Tier Status</span>
+          <span style={{ color }}>{Math.round(score)}%</span>
+        </div>
+        <ProgressBar progress={score} color={color} />
+      </div>
+      <p className="text-[10px] text-zinc-500 font-medium leading-relaxed">
+        {tier === 'high' && "Your financial profile is in the top 5%. Premium shards unlocked."}
+        {tier === 'normal' && "Solid trajectory. You are on track for your target timeline."}
+        {tier === 'low_compute' && "Savings rate trailing market growth. Consider Southampton Shards."}
+        {tier === 'critical' && "Immediate action required. High risk of missing target house price."}
+        {tier === 'dead' && "Mission failed. Profile requires immediate restructuring."}
+      </p>
     </div>
   )
 }
@@ -117,6 +197,10 @@ export default function ConsumerLanding() {
   // Calculations
   const yield10Year = investment * Math.pow(1 + 0.082, 10) - investment
   const wealthProjection = (calcSavings + (calcMonthlyIncome * 0.3 * 12 * 10)) * 1.05 // 5% growth assumption
+  
+  // Survival Score Calculation (0-100)
+  // Based on Wealth Projection vs Target Price + a bit of income factor
+  const survivalScore = Math.min(100, Math.max(0, (wealthProjection / calcTargetPrice) * 100));
 
   return (
     <main className="min-h-screen bg-[#08080a] text-zinc-100 selection:bg-[#00ff9d]/30 font-sans">
@@ -134,6 +218,8 @@ export default function ConsumerLanding() {
         .green-glow {
           box-shadow: 0 0 40px -10px rgba(0, 255, 157, 0.15);
         }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
       {/* Navigation */}
@@ -146,6 +232,7 @@ export default function ConsumerLanding() {
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
           <a href="#onboarding" className="hover:text-[#00ff9d] transition-colors">Start Here</a>
+          <a href="#mission-control" className="hover:text-[#00ff9d] transition-colors">Mission Control</a>
           <a href="#simulator" className="hover:text-[#00ff9d] transition-colors">Yield Lab</a>
           <a href="#dashboard" className="hover:text-[#00ff9d] transition-colors">Dashboard</a>
         </div>
@@ -304,6 +391,99 @@ export default function ConsumerLanding() {
         </div>
       </section>
 
+      {/* Mission Control Section (INTEGRATION) */}
+      <section id="mission-control" className="py-20 px-6 max-w-7xl mx-auto scroll-mt-24">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-12">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00ff9d] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00ff9d]"></span>
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#00ff9d]">System Live</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-plus font-extrabold tracking-tight">Mission Control</h2>
+            <p className="text-zinc-500 max-w-xl font-medium">Real-time financial sovereignty tracking inspired by Automaton agents. Your home-buying path, tokenized.</p>
+          </div>
+          <div className="flex gap-4">
+             <button className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
+               <ArrowUpRight size={20} className="text-zinc-400" />
+             </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          <div className="md:col-span-4">
+            <SurvivalWidget score={survivalScore} />
+          </div>
+          
+          <div className="md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="glass-card p-8 border-white/10 space-y-6">
+              <div className="flex justify-between items-center">
+                <h4 className="font-plus font-bold">Financial SOUL</h4>
+                <div className="px-2 py-1 rounded-md bg-[#00ff9d]/10 text-[#00ff9d] text-[10px] font-black uppercase tracking-widest">v0.2.1</div>
+              </div>
+              <div className="space-y-4">
+                <div className="p-4 rounded-xl bg-white/5 border border-white/5 space-y-2">
+                  <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest">Genesis Prompt</p>
+                  <p className="text-xs font-medium italic text-zinc-300 leading-relaxed">
+                    "Secure a {onboardingData.location || 'premium'} home in {onboardingData.timeframe || 'the next 12 months'} with a budget of £{onboardingData.budget.toLocaleString()}. Prioritize yield-bearing shards to accelerate capital growth."
+                  </p>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-1 space-y-1">
+                    <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest">Integrity</p>
+                    <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-blue-500 w-[92%]" />
+                    </div>
+                  </div>
+                  <div className="flex-1 space-y-1">
+                    <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest">Alignment</p>
+                    <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-[#00ff9d] w-[78%]" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="glass-card p-8 border-white/10 space-y-6 bg-zinc-900/50">
+              <div className="flex justify-between items-center">
+                <h4 className="font-plus font-bold">Market Intelligence</h4>
+                <TrendingUp size={18} className="text-[#00ff9d]" />
+              </div>
+              <div className="space-y-6">
+                 <div className="flex items-center gap-4">
+                   <div className="w-10 h-10 bg-[#00ff9d]/10 rounded-xl flex items-center justify-center text-[#00ff9d]">
+                     <PieChart size={20} />
+                   </div>
+                   <div className="flex-1">
+                     <p className="text-xs font-bold">Southampton Alpha</p>
+                     <p className="text-[10px] text-zinc-500 font-medium">Yield: 8.2% APY • High Liquidity</p>
+                   </div>
+                   <div className="text-right">
+                     <p className="text-xs font-black text-[#00ff9d]">+1.2%</p>
+                   </div>
+                 </div>
+                 <div className="flex items-center gap-4">
+                   <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500">
+                     <MapPin size={20} />
+                   </div>
+                   <div className="flex-1">
+                     <p className="text-xs font-bold">Manchester Core</p>
+                     <p className="text-[10px] text-zinc-500 font-medium">Yield: 6.5% APY • Stable Growth</p>
+                   </div>
+                   <div className="text-right">
+                     <p className="text-xs font-black text-blue-500">+0.8%</p>
+                   </div>
+                 </div>
+                 <button className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#00ff9d] hover:text-black transition-all">Explore Shards</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Showcase & Yield Simulator */}
       <section id="simulator" className="py-20 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-8">
@@ -349,7 +529,7 @@ export default function ConsumerLanding() {
       </section>
 
       {/* Affordability Calculator */}
-      <section className="py-20 px-6 max-w-7xl mx-auto bg-zinc-900/30 rounded-[3rem] border border-white/5 my-20 overflow-hidden relative">
+      <section id="calculator" className="py-20 px-6 max-w-7xl mx-auto bg-zinc-900/30 rounded-[3rem] border border-white/5 my-20 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#00ff9d]/5 blur-[120px]" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center p-8 md:p-16">
           <div className="lg:col-span-5 space-y-10">
