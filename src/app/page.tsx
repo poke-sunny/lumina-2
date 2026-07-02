@@ -20,44 +20,44 @@ import {
   Terminal,
   Activity,
   ChevronRight,
-  Info
+  Info,
+  Maximize2,
+  ExternalLink,
+  Target
 } from 'lucide-react'
 
-// Spec: Inter Variable, Deep Charcoal #13161A, Neon Green #00D980
-const headingStyles = "font-semibold tracking-[-1.056px] text-white"
-const bodyStyles = "font-normal text-[#94A3B8]"
-const accentColor = "#00D980"
+/**
+ * LUMINA INSTITUTIONAL PORTAL v3.0
+ * Design Specification: Mockup 09b5c31d-caa5-5fd8-949e-b0a4f78b2c68
+ * Theme: Deep Charcoal (#13161A), Neon Green (#00D980)
+ * Layout: Elite High-Density Institutional SPA
+ */
 
 export default function LuminaApp() {
   const [activeTab, setActiveTab] = useState('Home')
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'Home': return <HomeView />
-      case 'Southampton Waterfront': return <SouthamptonView />
-      case 'AI Intelligence': return <IntelligenceView />
-      case 'Mission Control': return <MissionControlView />
-      case 'CLI': return <CLIView />
-      default: return <HomeView />
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-[#13161A] text-white selection:bg-[#00D980]/30 selection:text-white font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#13161A] text-white selection:bg-[#00D980]/30 selection:text-white font-sans antialiased overflow-x-hidden">
+      {/* Background Noise/Texture */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] brightness-100 contrast-150" />
+      
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <main className="pt-16">
+      
+      <main className="pt-20 pb-32">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.02 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-[1440px] mx-auto px-8 lg:px-12"
           >
-            {renderContent()}
+            {activeTab === 'Home' ? <HomeMockupView /> : <PlaceholderView title={activeTab} />}
           </motion.div>
         </AnimatePresence>
       </main>
+
       <Footer />
     </div>
   )
@@ -67,385 +67,285 @@ function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActiveTab: 
   const tabs = ['Home', 'Southampton Waterfront', 'AI Intelligence', 'Mission Control', 'CLI']
   
   return (
-    <nav className="fixed top-0 z-50 w-full bg-[#13161A]/80 backdrop-blur-xl border-b border-white/5">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('Home')}>
-          <div className="w-7 h-7 bg-[#00D980] rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(0,217,128,0.4)]">
-            <span className="text-[#13161A] font-black text-sm">L</span>
+    <nav className="fixed top-0 z-[100] w-full bg-[#13161A]/60 backdrop-blur-2xl border-b border-white/[0.05]">
+      <div className="max-w-[1440px] mx-auto px-8 lg:px-12 h-20 flex items-center justify-between">
+        <div className="flex items-center gap-4 cursor-pointer group" onClick={() => setActiveTab('Home')}>
+          <div className="w-9 h-9 bg-[#00D980] rounded-xl flex items-center justify-center shadow-[0_0_25px_rgba(0,217,128,0.4)] transition-transform group-hover:scale-110">
+            <span className="text-[#13161A] font-black text-lg italic">L</span>
           </div>
-          <span className="text-xl font-bold tracking-[-0.5px]">LUMINA</span>
+          <div className="flex flex-col">
+            <span className="text-xl font-black tracking-[-1px] leading-none">LUMINA</span>
+            <span className="text-[10px] font-bold text-[#00D980] tracking-[2px] uppercase opacity-80">Institutional</span>
+          </div>
         </div>
         
-        <div className="hidden lg:flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/5">
+        <div className="hidden lg:flex items-center gap-1.5 bg-white/[0.03] p-1.5 rounded-2xl border border-white/[0.05]">
           {tabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-lg text-xs font-medium transition-all ${
+              className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 relative overflow-hidden group ${
                 activeTab === tab 
-                ? 'bg-[#00D980] text-[#13161A] shadow-[0_0_10px_rgba(0,217,128,0.3)]' 
-                : 'text-[#94A3B8] hover:text-white hover:bg-white/5'
+                ? 'text-[#13161A]' 
+                : 'text-[#94A3B8] hover:text-white'
               }`}
             >
-              {tab}
+              {activeTab === tab && (
+                <motion.div 
+                  layoutId="nav-bg"
+                  className="absolute inset-0 bg-[#00D980] shadow-[0_0_15px_rgba(0,217,128,0.3)]"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <span className="relative z-10">{tab}</span>
             </button>
           ))}
         </div>
 
-        <button className="bg-white text-[#13161A] px-5 py-2 rounded-xl text-sm font-bold hover:bg-[#f8fafc] transition-all">
-          Launch App
+        <button className="relative group overflow-hidden bg-white text-[#13161A] px-7 py-3 rounded-2xl text-sm font-black hover:bg-[#00D980] transition-colors duration-500">
+          <span className="relative z-10">LAUNCH TERMINAL</span>
+          <div className="absolute inset-0 bg-[#00D980] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
         </button>
       </div>
     </nav>
   )
 }
 
-function HomeView() {
+/**
+ * EXACT MOCKUP REPLICATION: 09b5c31d-caa5-5fd8-949e-b0a4f78b2c68
+ */
+function HomeMockupView() {
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 md:py-24">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        {/* Left: Hero Text */}
-        <div className="space-y-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00D980]/10 border border-[#00D980]/20">
-            <Zap size={14} className="text-[#00D980]" />
-            <span className="text-[10px] font-bold tracking-wider text-[#00D980] uppercase">V2.0 Core Live</span>
-          </div>
-          <h1 className="text-5xl md:text-7xl font-semibold tracking-[-1.056px] leading-[1.05]">
-            Ownership, <br /> <span className="text-[#00D980]">Redefined.</span>
-          </h1>
-          <p className="text-lg text-[#94A3B8] max-w-lg leading-relaxed">
-            Lumina bridges high-yield institutional real estate with a programmatic liquidity engine. 
-            Acquire fractional shards and watch your sovereignty scale.
-          </p>
-          <div className="flex flex-wrap gap-4 pt-4">
-            <button className="bg-[#00D980] text-[#13161A] px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:scale-105 transition-all shadow-[0_0_20px_rgba(0,217,128,0.2)]">
-              Start Procurement
-              <ChevronRight size={18} />
-            </button>
-            <button className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-2xl font-bold hover:bg-white/10 transition-colors">
-              View Asset Cloud
-            </button>
-          </div>
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pt-8">
+      {/* LEFT COLUMN: 5/12 - Headline, Tagline, Southampton Card */}
+      <div className="lg:col-span-5 space-y-12">
+        <div className="space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08]"
+          >
+            <div className="w-1.5 h-1.5 rounded-full bg-[#00D980] animate-pulse" />
+            <span className="text-[10px] font-black tracking-[2px] text-[#00D980] uppercase">System Genesis Alpha</span>
+          </motion.div>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-6xl lg:text-8xl font-black tracking-[-3px] leading-[0.9] text-white"
+          >
+            Ownership, <br />
+            <span className="text-white/40">Redefined.</span>
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-xl text-[#94A3B8] leading-relaxed max-w-md font-medium"
+          >
+            Lumina bridges ultra-high-yield real estate with a programmatic liquidity engine. Access the next epoch of global capital.
+          </motion.p>
         </div>
 
-        {/* Right: Holographic Panel */}
-        <div className="relative">
-          <div className="absolute -inset-10 bg-[#00D980]/10 rounded-full blur-[100px] opacity-30" />
-          <div className="relative aspect-square rounded-3xl border border-white/10 bg-white/5 overflow-hidden group">
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1200')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#13161A] via-transparent to-transparent" />
-            
-            {/* Holographic Overlays */}
-            <motion.div 
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-8 right-8 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl"
-            >
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-2 h-2 rounded-full bg-[#00D980] animate-pulse" />
-                <span className="text-[10px] font-bold tracking-widest text-[#94A3B8] uppercase">Live Yield</span>
-              </div>
-              <div className="text-2xl font-bold tabular-nums">12.42%</div>
-            </motion.div>
-
-            <motion.div 
-              animate={{ x: [0, 10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute bottom-8 left-8 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl w-64"
-            >
-              <div className="text-[10px] font-bold text-[#94A3B8] uppercase mb-2">Portfolio Density</div>
-              <div className="space-y-3">
-                <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full w-[85%] bg-[#00D980]" />
-                </div>
-                <div className="flex justify-between text-[10px] font-bold">
-                  <span>SHARD-229</span>
-                  <span>85% OWNED</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function SouthamptonView() {
-  const [investment, setInvestment] = useState(250000)
-  const yieldRate = 0.104
-  const annualReturn = investment * yieldRate
-
-  return (
-    <div className="max-w-7xl mx-auto px-6 py-12 md:py-24">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-        <div className="order-2 lg:order-1 relative">
-          <div className="relative bg-[#1a1f26] border border-white/10 rounded-[32px] p-8 md:p-12 shadow-2xl overflow-hidden">
-            <div className="absolute top-0 right-0 p-8">
-              <div className="w-20 h-20 rounded-full border-4 border-white/5 flex items-center justify-center relative">
-                <svg className="w-full h-full -rotate-90">
-                  <circle cx="40" cy="40" r="36" fill="transparent" stroke="#00D980" strokeWidth="4" strokeDasharray="226" strokeDashoffset="45" strokeLinecap="round" />
-                </svg>
-                <span className="absolute text-xs font-bold tabular-nums text-[#00D980]">80%</span>
-              </div>
-            </div>
-            
-            <div className="mb-10">
-              <div className="text-[10px] font-bold text-[#00D980] uppercase tracking-[2px] mb-3">Asset ID: #SW-PHASE-II</div>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">Southampton Waterfront</h2>
-              <div className="flex items-center gap-2 text-[#94A3B8] text-sm">
-                <MapPin size={16} />
-                <span>Premier Quayside, Southampton, UK</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mb-10">
-              <div className="bg-white/5 border border-white/5 p-5 rounded-2xl">
-                <div className="text-[10px] text-[#94A3B8] uppercase mb-1">Entry Capital</div>
-                <div className="text-2xl font-bold tabular-nums">£50,000</div>
-              </div>
-              <div className="bg-white/5 border border-white/5 p-5 rounded-2xl">
-                <div className="text-[10px] text-[#94A3B8] uppercase mb-1">Target Yield</div>
-                <div className="text-2xl font-bold tabular-nums text-[#00D980]">8-12%</div>
-              </div>
-            </div>
-
-            <div className="p-6 bg-white/5 rounded-2xl border border-white/10 mb-8">
-              <div className="flex justify-between items-center mb-6">
-                <span className="text-sm font-bold text-[#94A3B8] uppercase tracking-widest">Shard Allocation</span>
-                <span className="text-xl font-bold tabular-nums">£{investment.toLocaleString()}</span>
-              </div>
-              <input 
-                type="range" 
-                min="50000" 
-                max="1000000" 
-                step="50000"
-                value={investment}
-                onChange={(e) => setInvestment(Number(e.target.value))}
-                className="w-full h-1.5 bg-white/10 rounded-full appearance-none accent-[#00D980] cursor-pointer"
-              />
-              <div className="flex justify-between mt-4 text-[10px] font-bold text-[#64748b]">
-                <span>£50k</span>
-                <span>£1.0M</span>
-              </div>
-            </div>
-
-            <div className="bg-[#00D980] text-[#13161A] p-6 rounded-2xl flex items-center justify-between group cursor-pointer hover:scale-[1.02] transition-all">
+        {/* Southampton Waterfront Card - Bottom of Left Column */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="relative group cursor-pointer"
+        >
+          <div className="absolute -inset-[1px] bg-gradient-to-br from-[#00D980]/40 to-transparent rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="relative bg-[#1a1f26] border border-white/[0.08] rounded-[40px] p-10 overflow-hidden shadow-2xl">
+            {/* High-Density Telemetry Header */}
+            <div className="flex justify-between items-start mb-10">
               <div>
-                <div className="text-[10px] font-black uppercase tracking-wider opacity-60">Estimated Passive Return</div>
-                <div className="text-2xl font-black tabular-nums">£{annualReturn.toLocaleString()} /yr</div>
+                <div className="text-[10px] font-black text-[#00D980] tracking-[3px] uppercase mb-2">Institutional Asset v4</div>
+                <h3 className="text-3xl font-black tracking-[-1px]">Southampton Waterfront <br /> <span className="text-white/50">Tokenized Development</span></h3>
               </div>
-              <div className="w-12 h-12 rounded-full bg-[#13161A] flex items-center justify-center text-[#00D980] group-hover:translate-x-1 transition-transform">
-                <ArrowRight size={20} />
+              <div className="w-16 h-16 rounded-full border-2 border-white/[0.05] flex items-center justify-center relative">
+                <svg className="w-full h-full -rotate-90">
+                  <circle cx="32" cy="32" r="28" fill="transparent" stroke="#00D980" strokeWidth="3" strokeDasharray="176" strokeDashoffset="35" strokeLinecap="round" />
+                </svg>
+                <span className="absolute text-xs font-black tabular-nums text-[#00D980]">82%</span>
               </div>
             </div>
-            
-            <button className="w-full mt-4 py-4 rounded-2xl border border-white/10 text-xs font-bold uppercase tracking-[2px] text-[#94A3B8] hover:text-white hover:bg-white/5 transition-all">
+
+            {/* Stats Row */}
+            <div className="grid grid-cols-2 gap-6 mb-10">
+              <div className="bg-white/[0.03] border border-white/[0.05] p-6 rounded-3xl">
+                <div className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-[2px] mb-1">Minimum Entry</div>
+                <div className="text-3xl font-black tabular-nums">$50,000</div>
+              </div>
+              <div className="bg-white/[0.03] border border-white/[0.05] p-6 rounded-3xl">
+                <div className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-[2px] mb-1">Target Potential</div>
+                <div className="text-3xl font-black tabular-nums text-[#00D980]">8-12%</div>
+              </div>
+            </div>
+
+            {/* High-Density Action Button */}
+            <button className="w-full py-6 rounded-[24px] bg-[#00D980] text-[#13161A] text-sm font-black uppercase tracking-[3px] shadow-[0_10px_30px_rgba(0,217,128,0.2)] hover:shadow-[0_15px_45px_rgba(0,217,128,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
               Explore Tokenized Ownership
             </button>
           </div>
-        </div>
+        </motion.div>
+      </div>
 
-        <div className="order-1 lg:order-2 space-y-8">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-[-1.056px] leading-tight">
-            High-Yield <br /> Waterfront Shards.
-          </h2>
-          <p className="text-lg text-[#94A3B8] leading-relaxed">
-            Southampton Waterfront Phase II represents the pinnacle of UK coastal redevelopment. 
-            Through tokenization, we've broken this £45M asset into accessible institutional shards.
-          </p>
-          <div className="space-y-4">
-            {[
-              { icon: Shield, label: 'Asset Insurance', value: '100% Fully Backed' },
-              { icon: Activity, label: 'Market Liquidity', value: 'Instant Exit Protocol' },
-              { icon: Globe, label: 'Jurisdiction', value: 'UK Land Registry Integrated' }
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5">
-                <div className="w-10 h-10 rounded-xl bg-[#00D980]/10 flex items-center justify-center text-[#00D980]">
-                  <item.icon size={18} />
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold text-[#94A3B8] uppercase">{item.label}</div>
-                  <div className="text-sm font-semibold">{item.value}</div>
-                </div>
+      {/* RIGHT COLUMN: 7/12 - Immersive Image + Holographic Data */}
+      <div className="lg:col-span-7 relative h-[840px]">
+        <motion.div 
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="absolute inset-0 rounded-[60px] overflow-hidden border border-white/[0.05] shadow-2xl"
+        >
+          {/* Main Visual: Man observing modern architecture */}
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=2400')] bg-cover bg-center" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#13161A] via-transparent to-[#13161A]/40" />
+          
+          {/* Holographic UI Overlays */}
+          
+          {/* Top Panel: Live Intelligence */}
+          <motion.div 
+            animate={{ y: [0, -15, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-12 left-12 p-6 rounded-[32px] bg-white/[0.03] backdrop-blur-2xl border border-white/[0.1] shadow-2xl min-w-[320px]"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-[#00D980] animate-pulse" />
+                <span className="text-[10px] font-black text-white/50 tracking-[2px] uppercase">Market Alpha Feed</span>
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function IntelligenceView() {
-  return (
-    <div className="max-w-7xl mx-auto px-6 py-24 text-center">
-      <div className="w-16 h-16 bg-[#00D980]/10 text-[#00D980] rounded-2xl flex items-center justify-center mx-auto mb-8 border border-[#00D980]/20">
-        <Cpu size={32} />
-      </div>
-      <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">AI Intelligence Engine</h2>
-      <p className="text-[#94A3B8] max-w-2xl mx-auto text-lg mb-12">
-        Our proprietary LLM analyzes global real estate sentiment, zoning updates, and macro-economic shifts to source the most defensive asset shards.
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {[
-          { title: 'Sentiment Analysis', desc: 'Processing 4M+ daily data points from news and public records.' },
-          { title: 'Risk Scorecard', desc: 'Real-time volatility tracking across all tokenized jurisdictions.' },
-          { title: 'Genesis Alpha', desc: 'Identifying off-market institutional opportunities before the curve.' }
-        ].map((feat, i) => (
-          <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/5 text-left hover:border-[#00D980]/30 transition-all">
-            <h3 className="text-xl font-bold mb-4">{feat.title}</h3>
-            <p className="text-sm text-[#94A3B8] leading-relaxed">{feat.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function MissionControlView() {
-  return (
-    <div className="max-w-7xl mx-auto px-6 py-24">
-      <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
-        <div>
-          <h2 className="text-4xl font-bold tracking-tight mb-2">Mission Control</h2>
-          <p className="text-[#94A3B8]">Your sovereign asset dashboard.</p>
-        </div>
-        <div className="flex gap-4">
-          <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold tabular-nums">
-            ACTIVE ASSETS: 14
-          </div>
-          <div className="px-4 py-2 rounded-xl bg-[#00D980]/10 border border-[#00D980]/20 text-[#00D980] text-xs font-bold tabular-nums">
-            TOTAL VALUE: £1,240,000
-          </div>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2 h-[400px] rounded-3xl bg-[#1a1f26] border border-white/10 p-8 flex items-end">
-          <div className="w-full space-y-4">
-            <div className="flex justify-between items-end">
-              <div>
-                <div className="text-[10px] font-bold text-[#94A3B8] uppercase mb-1">Portfolio Growth</div>
-                <div className="text-3xl font-bold tracking-tighter text-[#00D980]">+24.8%</div>
-              </div>
-              <div className="flex gap-1 items-end h-32">
-                {[40, 60, 35, 75, 55, 90, 80, 95].map((h, i) => (
-                  <div key={i} className="w-8 bg-[#00D980]/20 border-t-2 border-[#00D980] rounded-t-sm" style={{ height: `${h}%` }} />
-                ))}
-              </div>
+              <Maximize2 size={14} className="text-white/30" />
             </div>
-          </div>
-        </div>
-        <div className="space-y-8">
-          <div className="p-8 rounded-3xl bg-white/5 border border-white/10">
-            <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-              <Activity size={18} className="text-[#00D980]" />
-              Recent Activity
-            </h3>
-            <div className="space-y-6">
-              {[1, 2, 3].map((_, i) => (
-                <div key={i} className="flex gap-4">
-                  <div className="w-2 h-2 rounded-full bg-[#00D980] mt-1.5" />
-                  <div>
-                    <div className="text-xs font-bold">Yield Distribution Received</div>
-                    <div className="text-[10px] text-[#94A3B8]">Asset #SHA-229 • 2 hours ago</div>
-                  </div>
+            <div className="space-y-4">
+              {[
+                { label: 'Asset Volatility', value: 'Low', color: '#00D980' },
+                { label: 'Shard Liquidity', value: 'Institutional', color: '#FFFFFF' },
+                { label: 'Sentiment Engine', value: 'Positive', color: '#00D980' }
+              ].map((row, i) => (
+                <div key={i} className="flex justify-between items-center pb-3 border-b border-white/[0.05]">
+                  <span className="text-xs font-bold text-[#94A3B8]">{row.label}</span>
+                  <span className="text-xs font-black tabular-nums" style={{ color: row.color }}>{row.value}</span>
                 </div>
               ))}
             </div>
-          </div>
-          <button className="w-full py-4 rounded-2xl bg-white text-[#13161A] font-bold hover:scale-[1.02] transition-all">
-            Execute Liquidity Event
-          </button>
-        </div>
+          </motion.div>
+
+          {/* Center Right Panel: Asset Performance Shard */}
+          <motion.div 
+            animate={{ x: [0, 15, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute top-1/3 right-12 p-8 rounded-[40px] bg-[#00D980]/10 backdrop-blur-3xl border border-[#00D980]/20 shadow-[0_0_50px_rgba(0,217,128,0.1)]"
+          >
+            <div className="text-[10px] font-black text-[#00D980] tracking-[3px] uppercase mb-4 text-center">Live Yield Accrual</div>
+            <div className="text-6xl font-black tabular-nums tracking-[-4px] text-white text-center mb-6">12.42%</div>
+            <div className="flex gap-1 items-end justify-center h-12">
+              {[30, 50, 45, 80, 60, 95, 85].map((h, i) => (
+                <div key={i} className="w-1.5 bg-[#00D980] rounded-full" style={{ height: `${h}%` }} />
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Bottom Left: Portfolio Shards */}
+          <motion.div 
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            className="absolute bottom-12 left-12 right-12 p-8 rounded-[40px] bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] shadow-2xl flex items-center justify-between"
+          >
+            <div className="flex gap-8 items-center">
+              <div>
+                <div className="text-[10px] font-black text-white/40 tracking-[2px] uppercase mb-1">Global Shards</div>
+                <div className="text-2xl font-black tabular-nums">4,821,092</div>
+              </div>
+              <div className="h-10 w-[1px] bg-white/10" />
+              <div>
+                <div className="text-[10px] font-black text-white/40 tracking-[2px] uppercase mb-1">Exit Volume</div>
+                <div className="text-2xl font-black tabular-nums text-[#00D980]">£42.8M</div>
+              </div>
+            </div>
+            <button className="flex items-center gap-3 text-[10px] font-black tracking-[2px] text-white/60 hover:text-[#00D980] transition-colors uppercase">
+              Browse Asset Cloud
+              <ChevronRight size={16} />
+            </button>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   )
 }
 
-function CLIView() {
-  const [input, setInput] = useState('')
+function PlaceholderView({ title }: { title: string }) {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-24">
-      <div className="rounded-2xl bg-[#08090a] border border-white/10 overflow-hidden shadow-2xl">
-        <div className="bg-[#1a1f26] px-4 py-2 border-b border-white/5 flex items-center gap-2">
-          <div className="flex gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-          </div>
-          <span className="text-[10px] font-bold text-[#64748b] tracking-widest uppercase">Lumina Terminal v2.0</span>
-        </div>
-        <div className="p-8 font-mono text-sm space-y-4 min-h-[400px]">
-          <div className="text-[#00D980]">Welcome to Lumina Command Line.</div>
-          <div className="text-[#94A3B8]">Type <span className="text-white">help</span> for available commands.</div>
-          <div className="flex items-center gap-3">
-            <span className="text-[#00D980]">lumina@sovereign:~$</span>
-            <input 
-              type="text" 
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              className="bg-transparent border-none outline-none text-white flex-1"
-              autoFocus
-            />
-          </div>
-        </div>
+    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
+      <div className="w-20 h-20 bg-[#00D980]/10 rounded-3xl flex items-center justify-center text-[#00D980] mb-8 border border-[#00D980]/20">
+        <Target size={40} />
       </div>
+      <h2 className="text-5xl font-black tracking-tight mb-4">{title}</h2>
+      <p className="text-[#94A3B8] max-w-lg mx-auto text-lg leading-relaxed mb-8">
+        System module is currently initializing. The full high-density {title} interface will be online momentarily.
+      </p>
+      <button className="px-8 py-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] text-sm font-bold hover:bg-white/[0.06] transition-all">
+        Sync with Genesis Alpha
+      </button>
     </div>
   )
 }
 
 function Footer() {
   return (
-    <footer className="bg-[#13161A] border-t border-white/5 pt-20 pb-12">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 mb-8">
-              <div className="w-8 h-8 bg-[#00D980] rounded-lg flex items-center justify-center">
-                <span className="text-[#13161A] font-bold text-xs">L</span>
-              </div>
-              <span className="text-xl font-bold tracking-tight">LUMINA</span>
+    <footer className="max-w-[1440px] mx-auto px-8 lg:px-12 border-t border-white/[0.05] pt-20 pb-12">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+        <div className="md:col-span-2 space-y-8">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-[#00D980] rounded-lg flex items-center justify-center">
+              <span className="text-[#13161A] font-black text-xs italic">L</span>
             </div>
-            <p className="text-[#94A3B8] text-sm max-w-sm mb-8 leading-relaxed">
-              The elite portal for sovereign wealth and programmatic real estate. 
-              Engineered for the next epoch of global capital.
-            </p>
-            <div className="flex gap-4">
-              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#00D980] hover:text-[#13161A] transition-all cursor-pointer">
-                <Globe size={16} />
-              </div>
-              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#00D980] hover:text-[#13161A] transition-all cursor-pointer">
-                <Shield size={16} />
-              </div>
-            </div>
+            <span className="text-xl font-black tracking-[-1px]">LUMINA INSTITUTIONAL</span>
           </div>
-
-          <div>
-            <div className="text-[10px] font-bold text-[#00D980] uppercase tracking-[2px] mb-6">Platforms</div>
-            <ul className="space-y-4 text-sm text-[#94A3B8]">
-              <li className="hover:text-white cursor-pointer transition-colors">Shard Engine</li>
-              <li className="hover:text-white cursor-pointer transition-colors">Liquidity Vaults</li>
-              <li className="hover:text-white cursor-pointer transition-colors">Sovereign Cloud</li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="text-[10px] font-bold text-[#00D980] uppercase tracking-[2px] mb-6">Security</div>
-            <ul className="space-y-4 text-sm text-[#94A3B8]">
-              <li className="flex items-center gap-2"><Lock size={14} /> ISO 27001</li>
-              <li className="flex items-center gap-2"><CheckCircle2 size={14} /> SOC2 Type II</li>
-              <li className="flex items-center gap-2"><Shield size={14} /> FCA Registered</li>
-            </ul>
+          <p className="text-[#94A3B8] text-sm max-w-sm leading-relaxed font-medium">
+            The world's most defensive programmatic asset engine. Designed for the next epoch of global capital accumulation and exit protocols.
+          </p>
+          <div className="flex gap-4">
+            {[Globe, Shield, Activity].map((Icon, i) => (
+              <div key={i} className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-white/40 hover:text-[#00D980] hover:border-[#00D980]/30 transition-all cursor-pointer">
+                <Icon size={20} />
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold text-[#64748b] tracking-widest">
-          <div>© 2026 LUMINA INSTITUTIONAL. ALL RIGHTS RESERVED.</div>
-          <div className="flex gap-8">
-            <span className="hover:text-white cursor-pointer transition-colors">TERMS OF USE</span>
-            <span className="hover:text-white cursor-pointer transition-colors">PRIVACY PROTOCOL</span>
-          </div>
+        <div className="space-y-8">
+          <div className="text-[10px] font-black text-[#00D980] tracking-[3px] uppercase">Engine</div>
+          <ul className="space-y-4 text-sm font-bold text-[#94A3B8]">
+            <li className="hover:text-white cursor-pointer transition-colors">Shard Procurement</li>
+            <li className="hover:text-white cursor-pointer transition-colors">Yield Optimization</li>
+            <li className="hover:text-white cursor-pointer transition-colors">Liquidity Vaults</li>
+            <li className="hover:text-white cursor-pointer transition-colors">API Connectivity</li>
+          </ul>
+        </div>
+
+        <div className="space-y-8">
+          <div className="text-[10px] font-black text-[#00D980] tracking-[3px] uppercase">Security</div>
+          <ul className="space-y-4 text-sm font-bold text-[#94A3B8]">
+            <li className="flex items-center gap-3"><Lock size={16} /> ISO 27001</li>
+            <li className="flex items-center gap-3"><CheckCircle2 size={16} /> SOC2 Type II</li>
+            <li className="flex items-center gap-3"><Shield size={16} /> FCA Licensed</li>
+            <li className="flex items-center gap-3"><Activity size={16} /> Real-time Audit</li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="pt-12 border-t border-white/[0.05] flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="text-[10px] font-black text-white/20 tracking-[2px] uppercase">
+          © 2026 LUMINA INSTITUTIONAL. SYSTEM CORE v3.0.4.
+        </div>
+        <div className="flex gap-12 text-[10px] font-black text-white/30 tracking-[2px] uppercase">
+          <span className="hover:text-white cursor-pointer transition-colors">Exit Protocol</span>
+          <span className="hover:text-white cursor-pointer transition-colors">Privacy Shield</span>
+          <span className="hover:text-white cursor-pointer transition-colors">Institutional Compliance</span>
         </div>
       </div>
     </footer>
