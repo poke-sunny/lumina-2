@@ -3,30 +3,44 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #003366;
+  --background: #13161A;
+  --foreground: #FFFFFF;
 }
 
 body {
-  background-color: #ffffff;
-  color: #003366;
+  background-color: #13161A;
+  color: #FFFFFF;
   font-feature-settings: "cv01", "ss03", "tnum";
   -webkit-font-smoothing: antialiased;
 }
 
 @layer base {
   h1, h2, h3, h4, h5, h6 {
-    @apply font-medium tracking-[-1.056px];
-    font-weight: 510;
+    @apply font-semibold tracking-[-1.056px];
   }
-}
-
-.glass-light {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 51, 102, 0.1);
 }
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+/* Custom range input styling */
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #00D980;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 217, 128, 0.5);
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #00D980;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 217, 128, 0.5);
 }

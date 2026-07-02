@@ -9,14 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#ffffff',
-        foreground: '#003366',
-        jigsawNavy: '#003366',
-        jigsawGrey: '#f8fafc',
-        jigsawGreen: '#00c853',
+        background: '#13161A',
+        foreground: '#FFFFFF',
+        luminaGreen: '#00D980',
+        luminaCharcoal: '#13161A',
+        luminaSlate: '#94A3B8',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Menlo', 'monospace'],
       },
     },
   },

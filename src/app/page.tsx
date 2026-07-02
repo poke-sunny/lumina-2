@@ -14,384 +14,437 @@ import {
   CheckCircle2,
   Navigation,
   Search,
-  Plus
+  Plus,
+  Home,
+  Cpu,
+  Terminal,
+  Activity,
+  ChevronRight,
+  Info
 } from 'lucide-react'
 
-// Spec: Inter Variable, 510 weight, -1.056px tracking for headings
-const headingStyles = "font-medium tracking-[-1.056px] text-[#003366]"
-const bodyStyles = "font-normal text-[#4a5568]"
+// Spec: Inter Variable, Deep Charcoal #13161A, Neon Green #00D980
+const headingStyles = "font-semibold tracking-[-1.056px] text-white"
+const bodyStyles = "font-normal text-[#94A3B8]"
+const accentColor = "#00D980"
 
-export default function Landing() {
+export default function LuminaApp() {
+  const [activeTab, setActiveTab] = useState('Home')
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'Home': return <HomeView />
+      case 'Southampton Waterfront': return <SouthamptonView />
+      case 'AI Intelligence': return <IntelligenceView />
+      case 'Mission Control': return <MissionControlView />
+      case 'CLI': return <CLIView />
+      default: return <HomeView />
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-[#ffffff] selection:bg-[#003366]/10 selection:text-[#003366]">
-      <Header />
-      <Hero />
-      <SaaSMockup />
-      <VenueShowcase />
-      <YieldCalculator />
+    <div className="min-h-screen bg-[#13161A] text-white selection:bg-[#00D980]/30 selection:text-white font-sans overflow-x-hidden">
+      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <main className="pt-16">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            {renderContent()}
+          </motion.div>
+        </AnimatePresence>
+      </main>
       <Footer />
     </div>
   )
 }
 
-function Header() {
+function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActiveTab: (t: string) => void }) {
+  const tabs = ['Home', 'Southampton Waterfront', 'AI Intelligence', 'Mission Control', 'CLI']
+  
   return (
-    <nav className="sticky top-0 z-50 w-full bg-[#ffffff]/80 backdrop-blur-md border-b border-[#f1f5f9]">
+    <nav className="fixed top-0 z-50 w-full bg-[#13161A]/80 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#003366] rounded-sm flex items-center justify-center">
-            <span className="text-white font-bold text-xs">J</span>
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('Home')}>
+          <div className="w-7 h-7 bg-[#00D980] rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(0,217,128,0.4)]">
+            <span className="text-[#13161A] font-black text-sm">L</span>
           </div>
-          <span className={`text-xl ${headingStyles} !tracking-[-0.5px]`}>JIGSAW</span>
+          <span className="text-xl font-bold tracking-[-0.5px]">LUMINA</span>
         </div>
         
-        <div className="hidden md:flex items-center gap-8">
-          {['Portfolio', 'Institutional', 'Security', 'About'].map((item) => (
-            <a key={item} href="#" className="text-sm font-medium text-[#64748b] hover:text-[#003366] transition-colors">
-              {item}
-            </a>
+        <div className="hidden lg:flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/5">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 rounded-lg text-xs font-medium transition-all ${
+                activeTab === tab 
+                ? 'bg-[#00D980] text-[#13161A] shadow-[0_0_10px_rgba(0,217,128,0.3)]' 
+                : 'text-[#94A3B8] hover:text-white hover:bg-white/5'
+              }`}
+            >
+              {tab}
+            </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-4">
-          <button className="text-sm font-medium text-[#003366]">Login</button>
-          <button className="bg-[#003366] text-white px-5 py-2 rounded-sm text-sm font-medium hover:bg-[#002244] transition-all">
-            Get Started
-          </button>
-        </div>
+        <button className="bg-white text-[#13161A] px-5 py-2 rounded-xl text-sm font-bold hover:bg-[#f8fafc] transition-all">
+          Launch App
+        </button>
       </div>
     </nav>
   )
 }
 
-function Hero() {
+function HomeView() {
   return (
-    <section className="relative pt-24 pb-20 overflow-hidden bg-[#f8fafc]">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-3xl"
-        >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#003366]/5 border border-[#003366]/10 mb-6">
-            <Shield size={14} className="text-[#003366]" />
-            <span className="text-[10px] font-bold tracking-wider text-[#003366] uppercase">ISO 27001 Certified Infrastructure</span>
+    <div className="max-w-7xl mx-auto px-6 py-12 md:py-24">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* Left: Hero Text */}
+        <div className="space-y-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00D980]/10 border border-[#00D980]/20">
+            <Zap size={14} className="text-[#00D980]" />
+            <span className="text-[10px] font-bold tracking-wider text-[#00D980] uppercase">V2.0 Core Live</span>
           </div>
-          
-          <h1 className={`text-5xl md:text-7xl mb-8 ${headingStyles} leading-[1.1] font-[510]`}>
-            Institutional Asset <br /> Procurement Engine.
+          <h1 className="text-5xl md:text-7xl font-semibold tracking-[-1.056px] leading-[1.05]">
+            Ownership, <br /> <span className="text-[#00D980]">Redefined.</span>
           </h1>
-          
-          <p className={`text-lg md:text-xl ${bodyStyles} max-w-xl mb-10 leading-relaxed`}>
-            The elite portal for sovereign wealth and institutional investors. 
-            Acquire fractional real estate shards with programmatic liquidity 
-            and real-time financial sovereignty.
+          <p className="text-lg text-[#94A3B8] max-w-lg leading-relaxed">
+            Lumina bridges high-yield institutional real estate with a programmatic liquidity engine. 
+            Acquire fractional shards and watch your sovereignty scale.
           </p>
-
-          <div className="flex flex-wrap gap-4">
-            <button className="bg-[#003366] text-white px-8 py-4 rounded-sm font-medium flex items-center gap-3 hover:gap-4 transition-all group">
+          <div className="flex flex-wrap gap-4 pt-4">
+            <button className="bg-[#00D980] text-[#13161A] px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:scale-105 transition-all shadow-[0_0_20px_rgba(0,217,128,0.2)]">
               Start Procurement
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              <ChevronRight size={18} />
             </button>
-            <button className="bg-white border border-[#e2e8f0] text-[#003366] px-8 py-4 rounded-sm font-medium hover:bg-[#f8fafc] transition-colors">
+            <button className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-2xl font-bold hover:bg-white/10 transition-colors">
               View Asset Cloud
             </button>
           </div>
-
-          <div className="mt-16 flex items-center gap-12 border-t border-[#e2e8f0] pt-10">
-            <div>
-              <div className="text-2xl font-[510] text-[#003366] tabular-nums tracking-tighter">$4.2B+</div>
-              <div className="text-xs text-[#94a3b8] uppercase font-bold tracking-widest mt-1">Managed Volume</div>
-            </div>
-            <div>
-              <div className="text-2xl font-[510] text-[#003366] tabular-nums tracking-tighter">18ms</div>
-              <div className="text-xs text-[#94a3b8] uppercase font-bold tracking-widest mt-1">Execution Speed</div>
-            </div>
-            <div>
-              <div className="text-2xl font-[510] text-[#003366] tabular-nums tracking-tighter">0.0%</div>
-              <div className="text-xs text-[#94a3b8] uppercase font-bold tracking-widest mt-1">Uptime Deviation</div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      <div className="absolute right-0 top-0 w-1/3 h-full hidden lg:block opacity-10 pointer-events-none">
-        <div className="w-full h-full border-l border-t border-[#003366] bg-[linear-gradient(45deg,#003366_12.5%,transparent_12.5%,transparent_50%,#003366_50%,#003366_62.5%,transparent_62.5%,transparent_100%)] bg-[length:40px_40px]" />
-      </div>
-    </section>
-  )
-}
-
-function SaaSMockup() {
-  return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className={`text-3xl md:text-4xl ${headingStyles} font-[510] mb-4`}>Unified Command Center</h2>
-          <p className={`${bodyStyles} max-w-2xl mx-auto`}>Total transparency over asset lifecycle, from initial shard discovery to institutional-grade yield distribution.</p>
         </div>
 
-        <div className="relative group">
-          <div className="absolute -inset-4 bg-[#003366]/5 rounded-[40px] blur-2xl group-hover:bg-[#003366]/10 transition-colors" />
-          <div className="relative bg-[#ffffff] border border-[#e2e8f0] rounded-2xl shadow-2xl overflow-hidden aspect-[16/10] md:aspect-[16/9]">
-            {/* SaaS Header UI */}
-            <div className="h-14 border-b border-[#f1f5f9] bg-[#f8fafc] px-6 flex items-center justify-between">
-              <div className="flex items-center gap-6">
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]/20 border border-[#ff5f57]/50" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]/20 border border-[#febc2e]/50" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]/20 border border-[#28c840]/50" />
+        {/* Right: Holographic Panel */}
+        <div className="relative">
+          <div className="absolute -inset-10 bg-[#00D980]/10 rounded-full blur-[100px] opacity-30" />
+          <div className="relative aspect-square rounded-3xl border border-white/10 bg-white/5 overflow-hidden group">
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1200')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#13161A] via-transparent to-transparent" />
+            
+            {/* Holographic Overlays */}
+            <motion.div 
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-8 right-8 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-2 h-2 rounded-full bg-[#00D980] animate-pulse" />
+                <span className="text-[10px] font-bold tracking-widest text-[#94A3B8] uppercase">Live Yield</span>
+              </div>
+              <div className="text-2xl font-bold tabular-nums">12.42%</div>
+            </motion.div>
+
+            <motion.div 
+              animate={{ x: [0, 10, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute bottom-8 left-8 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl w-64"
+            >
+              <div className="text-[10px] font-bold text-[#94A3B8] uppercase mb-2">Portfolio Density</div>
+              <div className="space-y-3">
+                <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full w-[85%] bg-[#00D980]" />
                 </div>
-                <div className="flex items-center gap-2 bg-white border border-[#e2e8f0] px-3 py-1 rounded text-[11px] text-[#64748b]">
-                  <Search size={12} />
-                  <span>jigsaw.io/procurement/shard-4492</span>
+                <div className="flex justify-between text-[10px] font-bold">
+                  <span>SHARD-229</span>
+                  <span>85% OWNED</span>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-[#003366]/10 flex items-center justify-center">
-                  <span className="text-[10px] text-[#003366] font-bold">AS</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex h-full">
-              {/* Sidebar UI */}
-              <div className="w-48 border-r border-[#f1f5f9] p-4 hidden md:block">
-                <div className="space-y-6">
-                  <div>
-                    <div className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-widest mb-3">Principal</div>
-                    <div className="space-y-2">
-                      {['Overview', 'Asset Shards', 'Liquidity'].map((t, i) => (
-                        <div key={t} className={`text-xs px-3 py-2 rounded ${i === 1 ? 'bg-[#003366] text-white' : 'text-[#64748b]'}`}>{t}</div>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-widest mb-3">Intelligence</div>
-                    <div className="space-y-2 text-[#64748b] text-xs px-3 py-2">Risk Feed</div>
-                    <div className="space-y-2 text-[#64748b] text-xs px-3 py-2">Projection Engine</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Main Content UI */}
-              <div className="flex-1 p-8 overflow-hidden">
-                <div className="flex justify-between items-start mb-8">
-                  <div>
-                    <div className="text-[10px] font-bold text-[#003366] uppercase mb-1">Asset Reference: #SHA-21450</div>
-                    <h3 className="text-xl font-[510] text-[#003366]">Southampton Waterfront Phase II</h3>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="bg-[#00c853]/10 text-[#00c853] text-[10px] font-bold px-2 py-1 rounded">ACTIVE</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                  <div className="bg-[#f8fafc] border border-[#f1f5f9] p-4 rounded-lg">
-                    <div className="text-[10px] text-[#94a3b8] uppercase mb-1">Current Yield</div>
-                    <div className="text-2xl font-[510] text-[#003366] tabular-nums">7.84%</div>
-                  </div>
-                  <div className="bg-[#f8fafc] border border-[#f1f5f9] p-4 rounded-lg">
-                    <div className="text-[10px] text-[#94a3b8] uppercase mb-1">Token Price</div>
-                    <div className="text-2xl font-[510] text-[#003366] tabular-nums">$14,220.00</div>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="h-4 w-full bg-[#f1f5f9] rounded-full overflow-hidden">
-                    <div className="h-full w-[78%] bg-[#003366]" />
-                  </div>
-                  <div className="flex justify-between text-[10px] font-bold text-[#64748b]">
-                    <span>78% ALLOCATED</span>
-                    <span>$12,400,000 REMAINING</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 
-function VenueShowcase() {
-  const venues = [
-    { name: "The Dorchester", location: "Mayfair, London", type: "Ultra-Luxury", yield: "4.2%", img: "bg-[#e2e8f0]" },
-    { name: "Southampton Hub", location: "Southampton", type: "Commercial Elite", yield: "7.8%", img: "bg-[#f1f5f9]" },
-    { name: "Temple View", location: "City of London", type: "Sovereign Asset", yield: "5.1%", img: "bg-[#f8fafc]" }
-  ]
-
-  return (
-    <section className="py-24 bg-[#f8fafc]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-16">
-          <div className="max-w-2xl">
-            <h2 className={`text-3xl md:text-4xl ${headingStyles} font-[510] mb-4`}>Verified Procurement Queue</h2>
-            <p className={bodyStyles}>Direct institutional access to the most coveted asset classes in the UK portfolio.</p>
-          </div>
-          <button className="text-sm font-bold text-[#003366] flex items-center gap-2 group">
-            Browse Full Portfolio <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {venues.map((venue) => (
-            <div key={venue.name} className="group bg-white rounded-sm border border-[#e2e8f0] overflow-hidden hover:shadow-lg transition-all duration-500">
-              <div className={`aspect-[4/3] ${venue.img} relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-[#003366]/5 group-hover:bg-transparent transition-colors" />
-                <div className="absolute top-4 left-4">
-                  <span className="bg-[#003366] text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-tighter">Premium</span>
-                </div>
-              </div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-lg font-[510] text-[#003366] mb-1">{venue.name}</h3>
-                    <div className="flex items-center gap-1.5 text-[11px] text-[#94a3b8]">
-                      <MapPin size={12} />
-                      {venue.location}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm font-bold text-[#003366] tabular-nums">{venue.yield}</div>
-                    <div className="text-[10px] text-[#94a3b8] uppercase">Target Yield</div>
-                  </div>
-                </div>
-                <button className="w-full py-3 bg-[#f8fafc] border border-[#e2e8f0] text-[#003366] text-xs font-bold uppercase tracking-widest hover:bg-[#003366] hover:text-white hover:border-[#003366] transition-all">
-                  Inspect Shards
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function YieldCalculator() {
+function SouthamptonView() {
   const [investment, setInvestment] = useState(250000)
-  const yieldRate = 0.0784
+  const yieldRate = 0.104
   const annualReturn = investment * yieldRate
 
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <div>
-            <h2 className={`text-3xl md:text-4xl ${headingStyles} font-[510] mb-8`}>Southampton Waterfront <br /> Projection Engine</h2>
-            <div className="space-y-8">
-              <div className="p-6 bg-[#f8fafc] rounded-lg border border-[#f1f5f9]">
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-sm font-bold text-[#64748b] uppercase tracking-widest">Initial Shard Allocation</span>
-                  <span className="text-xl font-[510] text-[#003366] tabular-nums">${investment.toLocaleString()}</span>
+    <div className="max-w-7xl mx-auto px-6 py-12 md:py-24">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <div className="order-2 lg:order-1 relative">
+          <div className="relative bg-[#1a1f26] border border-white/10 rounded-[32px] p-8 md:p-12 shadow-2xl overflow-hidden">
+            <div className="absolute top-0 right-0 p-8">
+              <div className="w-20 h-20 rounded-full border-4 border-white/5 flex items-center justify-center relative">
+                <svg className="w-full h-full -rotate-90">
+                  <circle cx="40" cy="40" r="36" fill="transparent" stroke="#00D980" strokeWidth="4" strokeDasharray="226" strokeDashoffset="45" strokeLinecap="round" />
+                </svg>
+                <span className="absolute text-xs font-bold tabular-nums text-[#00D980]">80%</span>
+              </div>
+            </div>
+            
+            <div className="mb-10">
+              <div className="text-[10px] font-bold text-[#00D980] uppercase tracking-[2px] mb-3">Asset ID: #SW-PHASE-II</div>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">Southampton Waterfront</h2>
+              <div className="flex items-center gap-2 text-[#94A3B8] text-sm">
+                <MapPin size={16} />
+                <span>Premier Quayside, Southampton, UK</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mb-10">
+              <div className="bg-white/5 border border-white/5 p-5 rounded-2xl">
+                <div className="text-[10px] text-[#94A3B8] uppercase mb-1">Entry Capital</div>
+                <div className="text-2xl font-bold tabular-nums">£50,000</div>
+              </div>
+              <div className="bg-white/5 border border-white/5 p-5 rounded-2xl">
+                <div className="text-[10px] text-[#94A3B8] uppercase mb-1">Target Yield</div>
+                <div className="text-2xl font-bold tabular-nums text-[#00D980]">8-12%</div>
+              </div>
+            </div>
+
+            <div className="p-6 bg-white/5 rounded-2xl border border-white/10 mb-8">
+              <div className="flex justify-between items-center mb-6">
+                <span className="text-sm font-bold text-[#94A3B8] uppercase tracking-widest">Shard Allocation</span>
+                <span className="text-xl font-bold tabular-nums">£{investment.toLocaleString()}</span>
+              </div>
+              <input 
+                type="range" 
+                min="50000" 
+                max="1000000" 
+                step="50000"
+                value={investment}
+                onChange={(e) => setInvestment(Number(e.target.value))}
+                className="w-full h-1.5 bg-white/10 rounded-full appearance-none accent-[#00D980] cursor-pointer"
+              />
+              <div className="flex justify-between mt-4 text-[10px] font-bold text-[#64748b]">
+                <span>£50k</span>
+                <span>£1.0M</span>
+              </div>
+            </div>
+
+            <div className="bg-[#00D980] text-[#13161A] p-6 rounded-2xl flex items-center justify-between group cursor-pointer hover:scale-[1.02] transition-all">
+              <div>
+                <div className="text-[10px] font-black uppercase tracking-wider opacity-60">Estimated Passive Return</div>
+                <div className="text-2xl font-black tabular-nums">£{annualReturn.toLocaleString()} /yr</div>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-[#13161A] flex items-center justify-center text-[#00D980] group-hover:translate-x-1 transition-transform">
+                <ArrowRight size={20} />
+              </div>
+            </div>
+            
+            <button className="w-full mt-4 py-4 rounded-2xl border border-white/10 text-xs font-bold uppercase tracking-[2px] text-[#94A3B8] hover:text-white hover:bg-white/5 transition-all">
+              Explore Tokenized Ownership
+            </button>
+          </div>
+        </div>
+
+        <div className="order-1 lg:order-2 space-y-8">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-[-1.056px] leading-tight">
+            High-Yield <br /> Waterfront Shards.
+          </h2>
+          <p className="text-lg text-[#94A3B8] leading-relaxed">
+            Southampton Waterfront Phase II represents the pinnacle of UK coastal redevelopment. 
+            Through tokenization, we've broken this £45M asset into accessible institutional shards.
+          </p>
+          <div className="space-y-4">
+            {[
+              { icon: Shield, label: 'Asset Insurance', value: '100% Fully Backed' },
+              { icon: Activity, label: 'Market Liquidity', value: 'Instant Exit Protocol' },
+              { icon: Globe, label: 'Jurisdiction', value: 'UK Land Registry Integrated' }
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5">
+                <div className="w-10 h-10 rounded-xl bg-[#00D980]/10 flex items-center justify-center text-[#00D980]">
+                  <item.icon size={18} />
                 </div>
-                <input 
-                  type="range" 
-                  min="50000" 
-                  max="5000000" 
-                  step="50000"
-                  value={investment}
-                  onChange={(e) => setInvestment(Number(e.target.value))}
-                  className="w-full h-1.5 bg-[#e2e8f0] rounded-full appearance-none accent-[#003366] cursor-pointer"
-                />
-                <div className="flex justify-between mt-3 text-[10px] font-bold text-[#94a3b8]">
-                  <span>MIN: $50,000</span>
-                  <span>MAX: $5,000,000</span>
+                <div>
+                  <div className="text-[10px] font-bold text-[#94A3B8] uppercase">{item.label}</div>
+                  <div className="text-sm font-semibold">{item.value}</div>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
-              <div className="grid grid-cols-2 gap-6">
-                <div className="p-6 border border-[#f1f5f9] rounded-lg">
-                  <div className="text-[10px] font-bold text-[#94a3b8] uppercase mb-1">Fixed Annual Yield</div>
-                  <div className="text-3xl font-[510] text-[#003366] tabular-nums">7.84%</div>
-                </div>
-                <div className="p-6 border border-[#f1f5f9] rounded-lg">
-                  <div className="text-[10px] font-bold text-[#94a3b8] uppercase mb-1">Forecasted Returns</div>
-                  <div className="text-3xl font-[510] text-[#00c853] tabular-nums">${annualReturn.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-                </div>
+function IntelligenceView() {
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-24 text-center">
+      <div className="w-16 h-16 bg-[#00D980]/10 text-[#00D980] rounded-2xl flex items-center justify-center mx-auto mb-8 border border-[#00D980]/20">
+        <Cpu size={32} />
+      </div>
+      <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">AI Intelligence Engine</h2>
+      <p className="text-[#94A3B8] max-w-2xl mx-auto text-lg mb-12">
+        Our proprietary LLM analyzes global real estate sentiment, zoning updates, and macro-economic shifts to source the most defensive asset shards.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[
+          { title: 'Sentiment Analysis', desc: 'Processing 4M+ daily data points from news and public records.' },
+          { title: 'Risk Scorecard', desc: 'Real-time volatility tracking across all tokenized jurisdictions.' },
+          { title: 'Genesis Alpha', desc: 'Identifying off-market institutional opportunities before the curve.' }
+        ].map((feat, i) => (
+          <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/5 text-left hover:border-[#00D980]/30 transition-all">
+            <h3 className="text-xl font-bold mb-4">{feat.title}</h3>
+            <p className="text-sm text-[#94A3B8] leading-relaxed">{feat.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function MissionControlView() {
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-24">
+      <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+        <div>
+          <h2 className="text-4xl font-bold tracking-tight mb-2">Mission Control</h2>
+          <p className="text-[#94A3B8]">Your sovereign asset dashboard.</p>
+        </div>
+        <div className="flex gap-4">
+          <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold tabular-nums">
+            ACTIVE ASSETS: 14
+          </div>
+          <div className="px-4 py-2 rounded-xl bg-[#00D980]/10 border border-[#00D980]/20 text-[#00D980] text-xs font-bold tabular-nums">
+            TOTAL VALUE: £1,240,000
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="md:col-span-2 h-[400px] rounded-3xl bg-[#1a1f26] border border-white/10 p-8 flex items-end">
+          <div className="w-full space-y-4">
+            <div className="flex justify-between items-end">
+              <div>
+                <div className="text-[10px] font-bold text-[#94A3B8] uppercase mb-1">Portfolio Growth</div>
+                <div className="text-3xl font-bold tracking-tighter text-[#00D980]">+24.8%</div>
+              </div>
+              <div className="flex gap-1 items-end h-32">
+                {[40, 60, 35, 75, 55, 90, 80, 95].map((h, i) => (
+                  <div key={i} className="w-8 bg-[#00D980]/20 border-t-2 border-[#00D980] rounded-t-sm" style={{ height: `${h}%` }} />
+                ))}
               </div>
             </div>
           </div>
-
-          <div className="bg-[#003366] rounded-2xl p-10 text-white relative overflow-hidden">
-            <div className="absolute right-0 top-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-            <h3 className="text-2xl font-[510] mb-6 tracking-tight">Institutional Performance</h3>
-            <p className="text-white/60 text-sm mb-10 leading-relaxed">Unlike retail real estate, Jigsaw assets are selected through an aggressive algorithmic filter ensuring only high-liquidity, high-yield institutional assets enter our cloud.</p>
-            
+        </div>
+        <div className="space-y-8">
+          <div className="p-8 rounded-3xl bg-white/5 border border-white/10">
+            <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+              <Activity size={18} className="text-[#00D980]" />
+              Recent Activity
+            </h3>
             <div className="space-y-6">
-              {[
-                { label: 'Blockchain Settlement', status: 'Immediate' },
-                { label: 'Asset Management', status: 'Jigsaw Direct' },
-                { label: 'Liquidity Window', status: '24/7 Shard Trading' }
-              ].map((item) => (
-                <div key={item.label} className="flex justify-between items-center py-4 border-b border-white/10">
-                  <span className="text-xs font-bold text-white/40 uppercase tracking-widest">{item.label}</span>
-                  <span className="text-sm font-[510]">{item.status}</span>
+              {[1, 2, 3].map((_, i) => (
+                <div key={i} className="flex gap-4">
+                  <div className="w-2 h-2 rounded-full bg-[#00D980] mt-1.5" />
+                  <div>
+                    <div className="text-xs font-bold">Yield Distribution Received</div>
+                    <div className="text-[10px] text-[#94A3B8]">Asset #SHA-229 • 2 hours ago</div>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
+          <button className="w-full py-4 rounded-2xl bg-white text-[#13161A] font-bold hover:scale-[1.02] transition-all">
+            Execute Liquidity Event
+          </button>
         </div>
       </div>
-    </section>
+    </div>
+  )
+}
+
+function CLIView() {
+  const [input, setInput] = useState('')
+  return (
+    <div className="max-w-4xl mx-auto px-6 py-24">
+      <div className="rounded-2xl bg-[#08090a] border border-white/10 overflow-hidden shadow-2xl">
+        <div className="bg-[#1a1f26] px-4 py-2 border-b border-white/5 flex items-center gap-2">
+          <div className="flex gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+          </div>
+          <span className="text-[10px] font-bold text-[#64748b] tracking-widest uppercase">Lumina Terminal v2.0</span>
+        </div>
+        <div className="p-8 font-mono text-sm space-y-4 min-h-[400px]">
+          <div className="text-[#00D980]">Welcome to Lumina Command Line.</div>
+          <div className="text-[#94A3B8]">Type <span className="text-white">help</span> for available commands.</div>
+          <div className="flex items-center gap-3">
+            <span className="text-[#00D980]">lumina@sovereign:~$</span>
+            <input 
+              type="text" 
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="bg-transparent border-none outline-none text-white flex-1"
+              autoFocus
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
 function Footer() {
   return (
-    <footer className="bg-[#f8fafc] border-t border-[#e2e8f0] pt-20 pb-12">
+    <footer className="bg-[#13161A] border-t border-white/5 pt-20 pb-12">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-8">
-              <div className="w-8 h-8 bg-[#003366] rounded-sm flex items-center justify-center">
-                <span className="text-white font-bold text-xs">J</span>
+              <div className="w-8 h-8 bg-[#00D980] rounded-lg flex items-center justify-center">
+                <span className="text-[#13161A] font-bold text-xs">L</span>
               </div>
-              <span className={`text-xl ${headingStyles} !tracking-[-0.5px]`}>JIGSAW</span>
+              <span className="text-xl font-bold tracking-tight">LUMINA</span>
             </div>
-            <p className={`${bodyStyles} text-sm max-w-sm mb-8`}>
-              The first sovereign-aligned institutional asset engine. Engineered in Mayfair, London. Built for the next epoch of global capital.
+            <p className="text-[#94A3B8] text-sm max-w-sm mb-8 leading-relaxed">
+              The elite portal for sovereign wealth and programmatic real estate. 
+              Engineered for the next epoch of global capital.
             </p>
             <div className="flex gap-4">
-              <div className="w-10 h-10 rounded-full border border-[#e2e8f0] flex items-center justify-center hover:bg-[#003366] hover:text-white transition-all cursor-pointer">
+              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#00D980] hover:text-[#13161A] transition-all cursor-pointer">
                 <Globe size={16} />
               </div>
-              <div className="w-10 h-10 rounded-full border border-[#e2e8f0] flex items-center justify-center hover:bg-[#003366] hover:text-white transition-all cursor-pointer">
+              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#00D980] hover:text-[#13161A] transition-all cursor-pointer">
                 <Shield size={16} />
               </div>
             </div>
           </div>
 
           <div>
-            <div className="text-[10px] font-bold text-[#003366] uppercase tracking-[2px] mb-6">Core Platforms</div>
-            <ul className="space-y-4 text-sm text-[#64748b]">
-              <li className="hover:text-[#003366] cursor-pointer">Asset Shard Engine</li>
-              <li className="hover:text-[#003366] cursor-pointer">Liquidity Vaults</li>
-              <li className="hover:text-[#003366] cursor-pointer">Sovereign Cloud</li>
-              <li className="hover:text-[#003366] cursor-pointer">Enterprise Portal</li>
+            <div className="text-[10px] font-bold text-[#00D980] uppercase tracking-[2px] mb-6">Platforms</div>
+            <ul className="space-y-4 text-sm text-[#94A3B8]">
+              <li className="hover:text-white cursor-pointer transition-colors">Shard Engine</li>
+              <li className="hover:text-white cursor-pointer transition-colors">Liquidity Vaults</li>
+              <li className="hover:text-white cursor-pointer transition-colors">Sovereign Cloud</li>
             </ul>
           </div>
 
           <div>
-            <div className="text-[10px] font-bold text-[#003366] uppercase tracking-[2px] mb-6">HQ / Compliance</div>
-            <ul className="space-y-4 text-sm text-[#64748b]">
-              <li className="flex items-center gap-2"><MapPin size={14} /> 45 Berkeley Square, Mayfair</li>
-              <li className="flex items-center gap-2"><Lock size={14} /> ISO 27001 Certified</li>
-              <li className="flex items-center gap-2"><Shield size={14} /> FCA Registered No. 92144</li>
-              <li className="flex items-center gap-2"><CheckCircle2 size={14} /> SOC2 Type II Compliant</li>
+            <div className="text-[10px] font-bold text-[#00D980] uppercase tracking-[2px] mb-6">Security</div>
+            <ul className="space-y-4 text-sm text-[#94A3B8]">
+              <li className="flex items-center gap-2"><Lock size={14} /> ISO 27001</li>
+              <li className="flex items-center gap-2"><CheckCircle2 size={14} /> SOC2 Type II</li>
+              <li className="flex items-center gap-2"><Shield size={14} /> FCA Registered</li>
             </ul>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-[#e2e8f0] flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-[10px] font-bold text-[#94a3b8] uppercase tracking-widest">
-            © 2026 JIGSAW INSTITUTIONAL PORTAL. ALL RIGHTS RESERVED.
-          </div>
-          <div className="flex gap-8 text-[10px] font-bold text-[#94a3b8] uppercase tracking-widest">
-            <span className="hover:text-[#003366] cursor-pointer">Terms of Sovereign Use</span>
-            <span className="hover:text-[#003366] cursor-pointer">Privacy Protocol</span>
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold text-[#64748b] tracking-widest">
+          <div>© 2026 LUMINA INSTITUTIONAL. ALL RIGHTS RESERVED.</div>
+          <div className="flex gap-8">
+            <span className="hover:text-white cursor-pointer transition-colors">TERMS OF USE</span>
+            <span className="hover:text-white cursor-pointer transition-colors">PRIVACY PROTOCOL</span>
           </div>
         </div>
       </div>
