@@ -10,16 +10,14 @@ const config: Config = {
     extend: {
       colors: {
         background: '#ffffff',
-        foreground: '#0f172a',
-        'jigsaw-navy': '#003366',
-        'jigsaw-blue': '#004a94',
-        'jigsaw-slate': '#64748b',
-        'jigsaw-border': 'rgba(0, 51, 102, 0.08)',
+        foreground: '#003366',
+        jigsawNavy: '#003366',
+        jigsawGrey: '#f8fafc',
+        jigsawGreen: '#00c853',
       },
-      boxShadow: {
-        'premium': '0 4px 20px -2px rgba(0, 51, 102, 0.04), 0 2px 10px -2px rgba(0, 51, 102, 0.02)',
-        'elevated': '0 20px 40px -12px rgba(0, 51, 102, 0.08)',
-      }
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
     },
   },
   plugins: [],
